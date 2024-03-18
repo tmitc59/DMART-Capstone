@@ -1,15 +1,20 @@
 /*
- * screens = [title=0, study=1, rhythm_guide=2, scales=3, note_flashcards=4,
+ * states = [title=0, study=1, rhythm_guide=2, scales=3, note_flashcards=4,
  *            play=5, song1=6,
  *                        song1_rhythm=7, song1_rhythm_practice=8,
  *                        song1_melody=9, song1_melody_practice=10,
  *                        song1_perform=11, song1_perform_practice=12,
- *            error_screen=13 ]
+ *            error=13 ]
  * 
  * accuracy: passing = 70%
+ * 
+ * TODO LIST
+ * - fix issue: images not showing up
+ * - fix issue: when going to new screen, new screen's content is hidden
+ * - buttons connected to sound (rhythm & play mode)
 */
-let screen = 0;   //keeps track of the screens
-let img;          //image var
+let screen = 0;   //keeps track of the states - start at title
+let time_sig_img, scale_img;          //image vars
 
 // title screen buttons
 let study_button, play_button;
@@ -26,6 +31,13 @@ let song1_rhythm, song1_rhythm_practice, song1_melody, song1_melody_practice,
 
 // rhythm & rhythm practice buttons
 let rhythm_hit;
+
+function preload() {
+  // cred: teacherspayteachers.com
+  time_sig_img = loadImage('assets/time-sig.jpg');
+  // cred: https://pianosecrets.com/wp-content/uploads/2019/10/330xNxnotes.png.pagespeed.ic_.XQb0I4IFUy.png
+  scale_img = loadImage('assets/c_scale.png');
+}
 
 function setup() {
   createCanvas(500, 500);
@@ -47,7 +59,7 @@ function setup() {
   }
   else if (screen == 1) {   // study screen 
     title_button = createButton("Back");
-    title_button.position(50, 50);
+    title_button.position(40, 25);
     title_button.mousePressed(() => {
       hideElements(1);
       changeScene(0);     // back to title screen
@@ -76,28 +88,24 @@ function setup() {
   }
   else if (screen == 2) {   // rhythm guide screen
     study_button = createButton("Back");
-    study_button.position(0, 0);
+    study_button.position(40, 25);
     study_button.mousePressed(() => {
       hideElements(2);
       changeScene(1);     // back to study screen
     });
-    // cred: teacherspayteachers.com
-    img = loadImage('assets/time-sig.jpg');
   }
   else if (screen == 3) {   // scales reference screen
     study_button = createButton("Back");
-    study_button.position(0, 0);
+    study_button.position(40, 25);
     study_button.mousePressed(() => {
       hideElements(3);
       changeScene(1);     // back to study screen
     });
-    // cred: https://pianosecrets.com/wp-content/uploads/2019/10/330xNxnotes.png.pagespeed.ic_.XQb0I4IFUy.png
-    img = loadImage('assets/c scale.png');
   }
   else if (screen == 4) {   // note flashcards screen
     // TODO: flashcards
     study_button = createButton("Back");
-    study_button.position(0, 0);
+    study_button.position(40, 25);
     study_button.mousePressed(() => {
       hideElements(4);
       changeScene(1);     // back to study screen
@@ -105,7 +113,7 @@ function setup() {
   }
   else if (screen == 5) {   // play screen
     title_button = createButton("Back");
-    title_button.position(50, 50);
+    title_button.position(40, 25);
     title_button.mousePressed(() => {
       hideElements(5);
       changeScene(0);     // back to title screen
@@ -120,7 +128,7 @@ function setup() {
   }
   else if (screen == 6) {   // song 1 screen
     play_button = createButton("Back");
-    play_button.position(0, 0);
+    play_button.position(40, 25);
     play_button.mousePressed(() => {
       hideElements(6);
       changeScene(5);     // back to play screen
@@ -168,7 +176,7 @@ function setup() {
   }
   else if (screen == 7) {   // song 1 rhythm screen
     song1_button = createButton("Back");
-    song1_button.position(25, 25);
+    song1_button.position(40, 25);
     song1_button.mousePressed(() => {
       hideElements(7);
       changeScene(5);     // back to song 1 screen
@@ -177,12 +185,13 @@ function setup() {
     rhythm_hit = createButton("");
     rhythm_hit.position(250, 450);
     rhythm_hit.mousePressed(() => {
+      // TODO: make rhythm button do something
       console.log('not implemented yet');
     });
   }
   else if (screen == 8) {   // song 1 rhythm practice screen
     song1_button = createButton("Back");
-    song1_button.position(25, 25);
+    song1_button.position(40, 25);
     song1_button.mousePressed(() => {
       hideElements(8);
       changeScene(5);     // back to song 1 screen
@@ -190,7 +199,7 @@ function setup() {
   }
   else if (screen == 9) {   // song 1 melody screen
     song1_button = createButton("Back");
-    song1_button.position(25, 25);
+    song1_button.position(40, 25);
     song1_button.mousePressed(() => {
       hideElements(9);
       changeScene(5);     // back to song 1 screen
@@ -198,7 +207,7 @@ function setup() {
   }
   else if (screen == 10) {  // song 1 melody practice screen
     song1_button = createButton("Back");
-    song1_button.position(25, 25);
+    song1_button.position(40, 25);
     song1_button.mousePressed(() => {
       hideElements(10);
       changeScene(5);     // back to song 1 screen
@@ -206,7 +215,7 @@ function setup() {
   }
   else if (screen == 11) {  // song 1 performance screen
     song1_button = createButton("Back");
-    song1_button.position(25, 25);
+    song1_button.position(40, 25);
     song1_button.mousePressed(() => {
       hideElements(11);
       changeScene(5);     // back to song 1 screen
@@ -214,7 +223,7 @@ function setup() {
   }
   else if (screen == 12) {  // song 1 performance practice screen
     song1_button = createButton("Back");
-    song1_button.position(25, 25);
+    song1_button.position(40, 25);
     song1_button.mousePressed(() => {
       hideElements(12);
       changeScene(5);     // back to song 1 screen
@@ -228,79 +237,80 @@ function setup() {
 }
 
 function draw() {
+  textSize(15);
+
   if (screen == 0) {        // title screen
     background(220);
     textAlign(CENTER);
-    text("title screen (wip)", 50, 25);
+    text("MEOWsic", 250, 25);
   }
   else if (screen == 1) {   // study screen
     background(200);
     textAlign(CENTER);
-    text("Study (wip)", 35, 25);
+    text("Study (wip)", 430, 25);
   }
   else if (screen == 2) {   // rhythm guide screen
-    // TODO: display rhythm image
     background(180);
     textAlign(CENTER);
-    text("rhythm guide (wip)", 50, 25);
+    text("rhythm guide (wip)", 430, 25);
+    image(time_sig_img, 75, 50);
   }
   else if (screen == 3) {   // scales reference screen
-    // TODO: display scales reference
     background(160);
     textAlign(CENTER);
-    text("scales ref (wip)", 50, 25);
-    image(img, 75, 50, 100, 100);
+    text("scales ref (wip)", 430, 25);
+    image(scale_img, 75, 50);
   }
   else if (screen == 4) {   // note flashcards screen
     // TODO: flashcards
     background(140);
     textAlign(CENTER);
-    text("note ref (wip)", 50, 25);
+    text("note ref (wip)", 430, 25);
   }
   else if (screen == 5) {   // play screen
     background(120);
     textAlign(CENTER);
-    text("Play (wip)", 30, 25);
+    text("Play (wip)", 430, 25);
   }
   else if (screen == 6) {   // song 1 screen
     background(100);
     textAlign(CENTER);
-    text("Song 1 (wip)", 50, 25);
+    text("Song 1 (wip)", 430, 25);
   }
   else if (screen == 7) {   // song 1 rhythm screen
     background(80);
     textAlign(CENTER);
-    text("song 1 rhythm (wip)", 50, 25);
+    text("song 1 rhythm (wip)", 430, 25);
   }
   else if (screen == 8) {   // song 1 rhythm practice screen
     background(80);
     textAlign(CENTER);
-    text("song 1 rhythm practice (wip)", 50, 25);
+    text("song 1 rhythm practice (wip)", 430, 25);
   }
   else if (screen == 9) {   // song 1 melody screen
     background(60);
     textAlign(CENTER);
-    text("song 1 melody (wip)", 50, 25);
+    text("song 1 melody (wip)", 430, 25);
   }
   else if (screen == 10) {  // song 1 melody practice screen
     background(60);
     textAlign(CENTER);
-    text("song 1 melody practice (wip)", 50, 25);
+    text("song 1 melody practice (wip)", 430, 25);
   }
   else if (screen == 11) {  // song 1 performance screen
     background(40);
     textAlign(CENTER);
-    text("song 1 performance (wip)", 50, 25);
+    text("song 1 performance (wip)", 430, 25);
   }
   else if (screen == 12) {  // song 1 performance practice screen
     background(40);
     textAlign(CENTER);
-    text("song 1 performance practice (wip)", 50, 25);
+    text("song 1 performance practice (wip)", 430, 25);
   }
   else {
     background("red");
     textAlign(CENTER);
-    text("error: draw() went outside the defined screens!", 50, 25);
+    text("error: draw() went outside the defined screens!", 250, 75);
   }
 }
 
@@ -368,11 +378,11 @@ function hideElements(x) {
       break;
     case 2:          // hide elements from rhythm guide
       study_button.hide();
-      img.hide();
+      time_sig_img.hide();
       break;
     case 3:          // hide elements from scales guide
       study_button.hide();
-      img.hide();
+      scale_img.hide();
       break;
     case 4:          // hide elements from note flashcards
       study_button.hide();
