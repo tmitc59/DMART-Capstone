@@ -15,6 +15,7 @@
  * - note flashcards
 */
 
+/* keeps track of the states */
 const scenes = Object.freeze({
   title: 0,
   study: 1,
@@ -22,9 +23,16 @@ const scenes = Object.freeze({
   scales_ref: 3,
   note_flashcards: 4,
   play: 5,
-  song1: 6
+  song1: 6,
+  s1rhythm: 7,
+  s1rhythm_practice: 8,
+  s1melody: 9,
+  s1melody_practice: 10,
+  s1perform: 11,
+  s1perform_practice: 12,
+  error: 13
 });
-let screen;   //keeps track of the states
+let screen;                    //current state
 let time_sig_img, scale_img;   //image vars
 
 // title screen buttons //
@@ -40,11 +48,13 @@ let rhythm_guide_button, scales_button, notes_button, title_button;
 
 // play screen buttons //
 let song1_button;
-let c, c_sharp, d, d_sharp, e, f, f_sharp, g, g_sharp, a, a_sharp, b;
 
 // song 1 buttons //
 let song1_rhythm, song1_rhythm_practice, song1_melody,
   song1_melody_practice, song1_perform, song1_perform_practice;
+
+// note buttons (melody & performance) //
+let c, c_sharp, d, d_sharp, e, f, f_sharp, g, g_sharp, a, a_sharp, b;
 
 // rhythm button //
 let rhythm_hit;
@@ -65,7 +75,7 @@ function setup() {
     study_button.position(150, 200);
     study_button.mousePressed(() => {
       hideElements(screen);
-      screen = 1;
+      changeScene(scenes.study);
       showElements(screen);
     });
 
@@ -73,11 +83,11 @@ function setup() {
     play_button.position(300, 200);
     play_button.mousePressed(() => {
       hideElements(screen);
-      screen = 5;
+      changeScene(scenes.play);
       showElements(screen);
     });
-  } else if (screen >= 13) {// error screen msg
-    console.log("error: setup() went outside the defined scenes!");
+  } else if (screen = scenes.error || screen >= 13) {// error screen msg
+    console.log(`error: setup() went outside the defined scenes! screen = ${screen}`);
     screen = 0;
   }
 
@@ -86,33 +96,33 @@ function setup() {
   study_back_button = createButton("Back");
   study_back_button.position(40, 25);
   study_back_button.mousePressed(() => {
-    hideElements(1);
-    changeScene(0);     // back to title screen
-    showElements(0);
+    hideElements(screen);
+    changeScene(scenes.title);     // back to title screen
+    showElements(screen);
   });
 
   rhythm_guide_button = createButton("Rhythm Guide");
   rhythm_guide_button.position(100, 50);
   rhythm_guide_button.mousePressed(() => {
-    hideElements(1);
-    changeScene(2);
-    showElements(2);
+    hideElements(screen);
+    changeScene(scenes.rhythm_guide);
+    showElements(screen);
   });
 
   scales_button = createButton("Scales Reference");
   scales_button.position(50, 65);
   scales_button.mousePressed(() => {
-    hideElements(1);
-    changeScene(3);
-    showElements(3);
+    hideElements(screen);
+    changeScene(scenes.scales_ref);
+    showElements(screen);
   });
 
   notes_button = createButton("Note Flash Cards");
   notes_button.position(50, 80);
   notes_button.mousePressed(() => {
-    hideElements(1);
-    changeScene(4);
-    showElements(4);
+    hideElements(screen);
+    changeScene(scenes.note_flashcards);
+    showElements(screen);
   });
 
   hideElements(1);
@@ -122,9 +132,9 @@ function setup() {
   rg_back_button = createButton("Back");
   rg_back_button.position(40, 25);
   rg_back_button.mousePressed(() => {
-    hideElements(2);
-    changeScene(1);     // back to study screen
-    showElements(1);
+    hideElements(screen);
+    changeScene(scenes.study);     // back to study screen
+    showElements(screen);
   });
   hideElements(2);
 
@@ -133,9 +143,9 @@ function setup() {
   sr_back_button = createButton("Back");
   sr_back_button.position(40, 25);
   sr_back_button.mousePressed(() => {
-    hideElements(3);
-    changeScene(1);     // back to study screen
-    showElements(1);
+    hideElements(screen);
+    changeScene(scenes.study);     // back to study screen
+    showElements(screen);
   });
   hideElements(3);
 
@@ -145,9 +155,9 @@ function setup() {
   nf_back_button = createButton("Back");
   nf_back_button.position(40, 25);
   nf_back_button.mousePressed(() => {
-    hideElements(4);
-    changeScene(1);     // back to study screen
-    showElements(1);
+    hideElements(screen);
+    changeScene(scenes.study);     // back to study screen
+    showElements(screen);
   });
   hideElements(4);
 
@@ -156,17 +166,17 @@ function setup() {
   play_back_button = createButton("Back");
   play_back_button.position(40, 25);
   play_back_button.mousePressed(() => {
-    hideElements(5);
-    changeScene(0);     // back to title screen
-    showElements(0);
+    hideElements(screen);
+    changeScene(scenes.title);     // back to title screen
+    showElements(screen);
   });
 
   song1_button = createButton("Song 1");
   song1_button.position(50, 200);
   song1_button.mousePressed(() => {
-    hideElements(5);
-    changeScene(6);
-    showElements(6);
+    hideElements(screen);
+    changeScene(scenes.song1);
+    showElements(screen);
   });
   hideElements(5);
 
@@ -175,55 +185,55 @@ function setup() {
   s1_back_button = createButton("Back");
   s1_back_button.position(40, 25);
   s1_back_button.mousePressed(() => {
-    hideElements(6);
-    changeScene(5);     // back to play screen
-    showElements(5);
+    hideElements(screen);
+    changeScene(scenes.play);     // back to play screen
+    showElements(screen);
   });
 
   song1_rhythm = createButton("Rhythm");
   song1_rhythm.position(50, 50);
   song1_rhythm.mousePressed(() => {
-    hideElements(6);
-    changeScene(7);
-    showElements(7);
+    hideElements(screen);
+    changeScene(scenes.s1rhythm);
+    showElements(screen);
   });
   song1_rhythm_practice = createButton("Practice");
   song1_rhythm_practice.position(100, 50);
   song1_rhythm_practice.mousePressed(() => {
-    hideElements(6);
-    changeScene(8);
-    showElements(8);
+    hideElements(screen);
+    changeScene(scenes.s1rhythm_practice);
+    showElements(screen);
   });
 
   // TODO: figure out how to lock things
   song1_melody = createButton("Melody (not locked yet)");
   song1_melody.position(50, 65);
   song1_melody.mousePressed(() => {
-    hideElements(6);
-    changeScene(9);
-    showElements(9);
+    hideElements(screen);
+    changeScene(scenes.s1melody);
+    showElements(screen);
   });
   song1_melody_practice = createButton("Practice");
   song1_melody_practice.position(100, 65);
   song1_melody_practice.mousePressed(() => {
-    hideElements(6);
-    changeScene(10);
-    showElements(10);
+    hideElements(screen);
+    changeScene(scenes.s1melody_practice);
+    showElements(screen);
   });
 
   song1_perform = createButton("Perform (not locked yet)");
   song1_perform.position(50, 80);
   song1_perform.mousePressed(() => {
-    hideElements(6);
-    changeScene(11);
-    showElements(11);
+    hideElements(screen);
+    changeScene(scenes.s1perform);
+    showElements(screen);
   });
   song1_perform_practice = createButton("Practice");
   song1_perform_practice.position(100, 80);
   song1_perform_practice.mousePressed(() => {
-    hideElements(6);
-    changeScene(12);
-    showElements(12);
+    hideElements(screen);
+    changeScene(scenes.s1perform_practice);
+    showElements(screen);
   });
 
   hideElements(6);
@@ -233,9 +243,9 @@ function setup() {
   s1r_back_button = createButton("Back");
   s1r_back_button.position(40, 25);
   s1r_back_button.mousePressed(() => {
-    hideElements(7);
-    changeScene(6);     // back to song 1 screen
-    showElements(6);
+    hideElements(screen);
+    changeScene(scenes.song1);     // back to song 1 screen
+    showElements(screen);
   });
 
   rhythm_hit = createButton("");
@@ -252,9 +262,9 @@ function setup() {
   s1rp_back_button = createButton("Back");
   s1rp_back_button.position(40, 25);
   s1rp_back_button.mousePressed(() => {
-    hideElements(8);
-    changeScene(6);     // back to song 1 screen
-    showElements(6);
+    hideElements(screen);
+    changeScene(scenes.song1);     // back to song 1 screen
+    showElements(screen);
   });
 
   hideElements(8);
@@ -264,9 +274,81 @@ function setup() {
   s1m_back_button = createButton("Back");
   s1m_back_button.position(40, 25);
   s1m_back_button.mousePressed(() => {
-    hideElements(9);
-    changeScene(6);     // back to song 1 screen
-    showElements(6);
+    hideElements(screen);
+    changeScene(scenes.song1);     // back to song 1 screen
+    showElements(screen);
+  });
+
+  c = createButton('C');
+  c.position(50, 400);
+  c.mousePressed(() => {
+    console.log('C');
+  });
+
+  c_sharp = createButton('C#');
+  c_sharp.position(70, 350);
+  c_sharp.mousePressed(() => {
+    console.log('C#');
+  });
+
+  d = createButton('D');
+  d.position(90, 400);
+  d.mousePressed(() => {
+    console.log('D');
+  });
+
+  d_sharp = createButton('D#');
+  d_sharp.position(107, 350);
+  d_sharp.mousePressed(() => {
+    console.log('D#');
+  });
+
+  e = createButton('E');
+  e.position(130, 400);
+  e.mousePressed(() => {
+    console.log('E');
+  });
+
+  f = createButton('F');
+  f.position(170, 400);
+  f.mousePressed(() => {
+    console.log('F');
+  });
+
+  f_sharp = createButton('F#');
+  f_sharp.position(190, 350);
+  f_sharp.mousePressed(() => {
+    console.log('F#');
+  });
+
+  g = createButton('G');
+  g.position(210, 400);
+  g.mousePressed(() => {
+    console.log('G');
+  });
+
+  g_sharp = createButton('G#');
+  g_sharp.position(227, 350);
+  g_sharp.mousePressed(() => {
+    console.log('G#');
+  });
+
+  a = createButton('A');
+  a.position(250, 400);
+  a.mousePressed(() => {
+    console.log('A');
+  });
+
+  a_sharp = createButton('A#');
+  a_sharp.position(265, 350);
+  a_sharp.mousePressed(() => {
+    console.log('A#');
+  });
+
+  b = createButton('B');
+  b.position(290, 400);
+  b.mousePressed(() => {
+    console.log('B');
   });
 
   hideElements(9);
@@ -276,9 +358,9 @@ function setup() {
   s1mp_back_button = createButton("Back");
   s1mp_back_button.position(40, 25);
   s1mp_back_button.mousePressed(() => {
-    hideElements(10);
-    changeScene(6);     // back to song 1 screen
-    showElements(6);
+    hideElements(screen);
+    changeScene(scenes.song1);     // back to song 1 screen
+    showElements(screen);
   });
 
   hideElements(10);
@@ -288,9 +370,9 @@ function setup() {
   s1p_back_button = createButton("Back");
   s1p_back_button.position(40, 25);
   s1p_back_button.mousePressed(() => {
-    hideElements(11);
-    changeScene(6);     // back to song 1 screen
-    showElements(6);
+    hideElements(screen);
+    changeScene(scenes.song1);     // back to song 1 screen
+    showElements(screen);
   });
 
   hideElements(11);
@@ -300,9 +382,9 @@ function setup() {
   s1pp_back_button = createButton("Back");
   s1pp_back_button.position(40, 25);
   s1pp_back_button.mousePressed(() => {
-    hideElements(12);
-    changeScene(6);     // back to song 1 screen
-    showElements(6);
+    hideElements(screen);
+    changeScene(scenes.song1);     // back to song 1 screen
+    showElements(screen);
   });
 
   hideElements(12);
@@ -311,70 +393,70 @@ function setup() {
 function draw() {
   textSize(15);
 
-  if (screen == 0) {        // title screen
+  if (screen == scenes.title) {        // title screen
     background(220);
     textAlign(CENTER);
     text("MEOWsic", 250, 25);
   }
-  else if (screen == 1) {   // study screen
+  else if (screen == scenes.study) {   // study screen
     background(200);
     textAlign(CENTER);
     text("Study (wip)", 430, 25);
   }
-  else if (screen == 2) {   // rhythm guide screen
+  else if (screen == scenes.rhythm_guide) {   // rhythm guide screen
     background(180);
     textAlign(CENTER);
     text("rhythm guide (wip)", 430, 25);
     image(time_sig_img, 75, 50);
   }
-  else if (screen == 3) {   // scales reference screen
+  else if (screen == scenes.scales_ref) {   // scales reference screen
     background(160);
     textAlign(CENTER);
     text("scales ref (wip)", 430, 25);
     image(scale_img, 75, 50);
   }
-  else if (screen == 4) {   // note flashcards screen
+  else if (screen == scenes.note_flashcards) {   // note flashcards screen
     // TODO: flashcards
     background(140);
     textAlign(CENTER);
     text("note ref (wip)", 430, 25);
   }
-  else if (screen == 5) {   // play screen
+  else if (screen == scenes.play) {   // play screen
     background(120);
     textAlign(CENTER);
     text("Play (wip)", 430, 25);
   }
-  else if (screen == 6) {   // song 1 screen
+  else if (screen == scenes.song1) {   // song 1 screen
     background(100);
     textAlign(CENTER);
     text("Song 1 (wip)", 430, 25);
   }
-  else if (screen == 7) {   // song 1 rhythm screen
+  else if (screen == scenes.s1rhythm) {   // song 1 rhythm screen
     background(80);
     textAlign(CENTER);
     text("song 1 rhythm (wip)", 430, 25);
   }
-  else if (screen == 8) {   // song 1 rhythm practice screen
+  else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
     background(80);
     textAlign(CENTER);
     text("song 1 rhythm practice (wip)", 430, 25);
   }
-  else if (screen == 9) {   // song 1 melody screen
+  else if (screen == scenes.s1melody) {   // song 1 melody screen
     background(60);
     textAlign(CENTER);
     text("song 1 melody (wip)", 430, 25);
   }
-  else if (screen == 10) {  // song 1 melody practice screen
+  else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
     background(60);
     textAlign(CENTER);
     text("song 1 melody practice (wip)", 430, 25);
   }
-  else if (screen == 11) {  // song 1 performance screen
+  else if (screen == scenes.s1perform) {  // song 1 performance screen
     background(40);
     textAlign(CENTER);
     text("song 1 performance (wip)", 430, 25);
   }
-  else if (screen == 12) {  // song 1 performance practice screen
+  else if (screen == scenes.s1perform_practice) {  // song 1 performance practice screen
     background(40);
     textAlign(CENTER);
     text("song 1 performance practice (wip)", 430, 25);
@@ -389,52 +471,7 @@ function draw() {
 
 /* switches scenes using the scene number to swtich to (for example, 0=title) as an input */
 function changeScene(x) {
-  switch (x) {
-    case 0:
-      screen = 0;   // go to title screen
-      break;
-
-    case 1:
-      screen = 1;   // go to study screen
-      break;
-    case 2:
-      screen = 2;   // go to rhythm guide
-      break;
-    case 3:
-      screen = 3;   // go to scales guide
-      break;
-    case 4:
-      screen = 4;   // go to note flashcards
-      break;
-
-    case 5:
-      screen = 5;   // go to play screen
-      break;
-    case 6:
-      screen = 6;   // go to song 1 screen
-      break;
-    case 7:
-      screen = 7;   // go to song 1 rhythm
-      break;
-    case 8:
-      screen = 8;   // go to song 1 rhythm practice
-      break;
-    case 9:
-      screen = 9;   // go to song 1 melody
-      break;
-    case 10:
-      screen = 10;   // go to song 1 melody practice
-      break;
-    case 11:
-      screen = 11;   // go to song 1 performance
-      break;
-    case 12:
-      screen = 12;   // go to song 1 performance practice
-      break;
-    default:
-      screen = 13;   // go to error message
-      break;
-  }
+  screen = x;
 }
 
 /* hides the elements (buttons, etc.) from the screen in preperation to switch scenes */
@@ -480,18 +517,67 @@ function hideElements(x) {
       break;
     case 8:          // hide elements from song 1 rhythm practice
       s1rp_back_button.hide();
+      rhythm_hit.hide();
       break;
     case 9:          // hide elements from song 1 melody
       s1m_back_button.hide();
+      c.hide();
+      c_sharp.hide();
+      d.hide();
+      d_sharp.hide();
+      e.hide();
+      f.hide();
+      f_sharp.hide();
+      g.hide();
+      g_sharp.hide();
+      a.hide();
+      a_sharp.hide();
+      b.hide();
       break;
     case 10:         // hide elements from song 1 melody practice
       s1mp_back_button.hide();
+      c.hide();
+      c_sharp.hide();
+      d.hide();
+      d_sharp.hide();
+      e.hide();
+      f.hide();
+      f_sharp.hide();
+      g.hide();
+      g_sharp.hide();
+      a.hide();
+      a_sharp.hide();
+      b.hide();
       break;
     case 11:         // hide elements from song 1 performance
       s1p_back_button.hide();
+      c.hide();
+      c_sharp.hide();
+      d.hide();
+      d_sharp.hide();
+      e.hide();
+      f.hide();
+      f_sharp.hide();
+      g.hide();
+      g_sharp.hide();
+      a.hide();
+      a_sharp.hide();
+      b.hide();
       break;
     case 12:         // hide elements from song 1 performance practice
       s1pp_back_button.hide();
+      c.hide();
+      c_sharp.hide();
+      d.hide();
+      d_sharp.hide();
+      e.hide();
+      f.hide();
+      f_sharp.hide();
+      g.hide();
+      g_sharp.hide();
+      a.hide();
+      a_sharp.hide();
+      b.hide();
       break;
     default:         // hide elements from error message
       break;
@@ -541,18 +627,67 @@ function showElements(x) {
       break;
     case 8:          // hide elements from song 1 rhythm practice
       s1rp_back_button.show();
+      rhythm_hit.show();
       break;
     case 9:          // hide elements from song 1 melody
       s1m_back_button.show();
+      c.show();
+      c_sharp.show();
+      d.show();
+      d_sharp.show();
+      e.show();
+      f.show();
+      f_sharp.show();
+      g.show();
+      g_sharp.show();
+      a.show();
+      a_sharp.show();
+      b.show();
       break;
     case 10:         // hide elements from song 1 melody practice
       s1mp_back_button.show();
+      c.show();
+      c_sharp.show();
+      d.show();
+      d_sharp.show();
+      e.show();
+      f.show();
+      f_sharp.show();
+      g.show();
+      g_sharp.show();
+      a.show();
+      a_sharp.show();
+      b.show();
       break;
     case 11:         // hide elements from song 1 performance
       s1p_back_button.show();
+      c.show();
+      c_sharp.show();
+      d.show();
+      d_sharp.show();
+      e.show();
+      f.show();
+      f_sharp.show();
+      g.show();
+      g_sharp.show();
+      a.show();
+      a_sharp.show();
+      b.show();
       break;
     case 12:         // hide elements from song 1 performance practice
       s1pp_back_button.show();
+      c.show();
+      c_sharp.show();
+      d.show();
+      d_sharp.show();
+      e.show();
+      f.show();
+      f_sharp.show();
+      g.show();
+      g_sharp.show();
+      a.show();
+      a_sharp.show();
+      b.show();
       break;
     default:         // hide elements from error message
       break;
