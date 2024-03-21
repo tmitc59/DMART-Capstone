@@ -94,7 +94,7 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// STUDY SCENE BUTTONS ////
   study_back_button = createButton("Back");
-  study_back_button.position(40, 25);
+  study_back_button.position(30, 25);
   study_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.title);     // back to title screen
@@ -102,7 +102,7 @@ function setup() {
   });
 
   rhythm_guide_button = createButton("Rhythm Guide");
-  rhythm_guide_button.position(100, 50);
+  rhythm_guide_button.position(150, 150);
   rhythm_guide_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.rhythm_guide);
@@ -110,7 +110,7 @@ function setup() {
   });
 
   scales_button = createButton("Scales Reference");
-  scales_button.position(50, 65);
+  scales_button.position(150, 175);
   scales_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.scales_ref);
@@ -118,7 +118,7 @@ function setup() {
   });
 
   notes_button = createButton("Note Flash Cards");
-  notes_button.position(50, 80);
+  notes_button.position(150, 200);
   notes_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.note_flashcards);
@@ -130,7 +130,7 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// RHYTHM GUIDE SCENE BUTTONS ////
   rg_back_button = createButton("Back");
-  rg_back_button.position(40, 25);
+  rg_back_button.position(30, 25);
   rg_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.study);     // back to study screen
@@ -141,7 +141,7 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// SCALES REFERENCE SCENE BUTTONS ////
   sr_back_button = createButton("Back");
-  sr_back_button.position(40, 25);
+  sr_back_button.position(30, 25);
   sr_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.study);     // back to study screen
@@ -153,7 +153,7 @@ function setup() {
   //// NOTE FLASHCARDS SCENE BUTTONS ////
   // TODO: flashcards
   nf_back_button = createButton("Back");
-  nf_back_button.position(40, 25);
+  nf_back_button.position(30, 25);
   nf_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.study);     // back to study screen
@@ -164,7 +164,7 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// PLAY SCENE BUTTONS ////
   play_back_button = createButton("Back");
-  play_back_button.position(40, 25);
+  play_back_button.position(30, 25);
   play_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.title);     // back to title screen
@@ -172,7 +172,7 @@ function setup() {
   });
 
   song1_button = createButton("Song 1");
-  song1_button.position(50, 200);
+  song1_button.position(240, 200);
   song1_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.song1);
@@ -183,7 +183,7 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// SONG 1 SCENE BUTTONS ////
   s1_back_button = createButton("Back");
-  s1_back_button.position(40, 25);
+  s1_back_button.position(30, 25);
   s1_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.play);     // back to play screen
@@ -191,14 +191,14 @@ function setup() {
   });
 
   song1_rhythm = createButton("Rhythm");
-  song1_rhythm.position(50, 50);
+  song1_rhythm.position(185, 200);
   song1_rhythm.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.s1rhythm);
     showElements(screen);
   });
   song1_rhythm_practice = createButton("Practice");
-  song1_rhythm_practice.position(100, 50);
+  song1_rhythm_practice.position(250, 200);
   song1_rhythm_practice.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.s1rhythm_practice);
@@ -207,14 +207,14 @@ function setup() {
 
   // TODO: figure out how to lock things
   song1_melody = createButton("Melody (not locked yet)");
-  song1_melody.position(50, 65);
+  song1_melody.position(185, 220);
   song1_melody.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.s1melody);
     showElements(screen);
   });
   song1_melody_practice = createButton("Practice");
-  song1_melody_practice.position(100, 65);
+  song1_melody_practice.position(250, 220);
   song1_melody_practice.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.s1melody_practice);
@@ -222,14 +222,14 @@ function setup() {
   });
 
   song1_perform = createButton("Perform (not locked yet)");
-  song1_perform.position(50, 80);
+  song1_perform.position(185, 240);
   song1_perform.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.s1perform);
     showElements(screen);
   });
   song1_perform_practice = createButton("Practice");
-  song1_perform_practice.position(100, 80);
+  song1_perform_practice.position(250, 240);
   song1_perform_practice.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.s1perform_practice);
@@ -241,15 +241,15 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// SONG 1 RHYTHM SCENE BUTTONS ////
   s1r_back_button = createButton("Back");
-  s1r_back_button.position(40, 25);
+  s1r_back_button.position(30, 25);
   s1r_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.song1);     // back to song 1 screen
     showElements(screen);
   });
 
-  rhythm_hit = createButton("");
-  rhythm_hit.position(250, 450);
+  rhythm_hit = createButton(" ");
+  rhythm_hit.position(240, 450);
   rhythm_hit.mousePressed(() => {
     // TODO: make rhythm button do something
     console.log('not implemented yet');
@@ -260,7 +260,7 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// SONG 1 RHYTHM PRACTICE SCENE BUTTONS ////
   s1rp_back_button = createButton("Back");
-  s1rp_back_button.position(40, 25);
+  s1rp_back_button.position(30, 25);
   s1rp_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.song1);     // back to song 1 screen
@@ -272,7 +272,7 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// SONG 1 MELODY SCENE BUTTONS ////
   s1m_back_button = createButton("Back");
-  s1m_back_button.position(40, 25);
+  s1m_back_button.position(30, 25);
   s1m_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.song1);     // back to song 1 screen
@@ -356,7 +356,7 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// SONG 1 MELODY PRACTICE SCENE BUTTONS ////
   s1mp_back_button = createButton("Back");
-  s1mp_back_button.position(40, 25);
+  s1mp_back_button.position(30, 25);
   s1mp_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.song1);     // back to song 1 screen
@@ -368,7 +368,7 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// SONG 1 PERFORMANCE SCENE BUTTONS ////
   s1p_back_button = createButton("Back");
-  s1p_back_button.position(40, 25);
+  s1p_back_button.position(30, 25);
   s1p_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.song1);     // back to song 1 screen
@@ -380,7 +380,7 @@ function setup() {
   ///////////////////////////////////////////////////////////////
   //// SONG 1 PERFORMANCE PRACTICE SCENE BUTTONS ////
   s1pp_back_button = createButton("Back");
-  s1pp_back_button.position(40, 25);
+  s1pp_back_button.position(30, 25);
   s1pp_back_button.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.song1);     // back to song 1 screen
@@ -401,65 +401,63 @@ function draw() {
   else if (screen == scenes.study) {   // study screen
     background(200);
     textAlign(CENTER);
-    text("Study (wip)", 430, 25);
+    text("Study", 445, 25);
   }
   else if (screen == scenes.rhythm_guide) {   // rhythm guide screen
     background(180);
-    textAlign(CENTER);
-    text("rhythm guide (wip)", 430, 25);
-    image(time_sig_img, 75, 50);
+    image(time_sig_img, 15, -48);
   }
   else if (screen == scenes.scales_ref) {   // scales reference screen
     background(160);
     textAlign(CENTER);
-    text("scales ref (wip)", 430, 25);
-    image(scale_img, 75, 50);
+    text("Scales Reference", 428, 25);
+    image(scale_img, 13, 150);
   }
   else if (screen == scenes.note_flashcards) {   // note flashcards screen
     // TODO: flashcards
     background(140);
     textAlign(CENTER);
-    text("note ref (wip)", 430, 25);
+    text("Note Reference", 432, 25);
   }
   else if (screen == scenes.play) {   // play screen
     background(120);
     textAlign(CENTER);
-    text("Play (wip)", 430, 25);
+    text("Play", 440, 25);
   }
   else if (screen == scenes.song1) {   // song 1 screen
     background(100);
     textAlign(CENTER);
-    text("Song 1 (wip)", 430, 25);
+    text("Song 1", 440, 25);
   }
   else if (screen == scenes.s1rhythm) {   // song 1 rhythm screen
     background(80);
     textAlign(CENTER);
-    text("song 1 rhythm (wip)", 430, 25);
+    text("Song 1 Rhythm", 435, 25);
   }
   else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
     background(80);
     textAlign(CENTER);
-    text("song 1 rhythm practice (wip)", 430, 25);
+    text("Song 1 Rhythm Practice", 430, 25);
   }
   else if (screen == scenes.s1melody) {   // song 1 melody screen
     background(60);
     textAlign(CENTER);
-    text("song 1 melody (wip)", 430, 25);
+    text("Song 1 Melody", 435, 25);
   }
   else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
     background(60);
     textAlign(CENTER);
-    text("song 1 melody practice (wip)", 430, 25);
+    text("Song 1 Melody Practice", 430, 25);
   }
   else if (screen == scenes.s1perform) {  // song 1 performance screen
     background(40);
     textAlign(CENTER);
-    text("song 1 performance (wip)", 430, 25);
+    text("Song 1 Performance", 430, 25);
   }
   else if (screen == scenes.s1perform_practice) {  // song 1 performance practice screen
     background(40);
     textAlign(CENTER);
-    text("song 1 performance practice (wip)", 430, 25);
+    text("Song 1 Performance Practice", 425, 25);
   }
   else {
     background("red");
