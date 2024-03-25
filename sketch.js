@@ -10,9 +10,14 @@
  * 
  * TODO LIST
  * - connect buttons to sound (rhythm & play mode)
- * - figure out how to lock buttons - maybe show a pop-up window?
  * - connect buttons to interaction (rhythm & play mode)
  * - note flashcards
+ * - save state / login?
+ * 
+ * for future reference:
+ * - p5 button types: https://editor.p5js.org/jeffThompson/sketches/dmG6fvuWi
+ * - hover text box: https://editor.p5js.org/xinxin/sketches/WEFVlnvSg
+ * - headings: header2 = createElement('h2', 'what is your name?');
 */
 
 /* keeps track of the states */
@@ -34,6 +39,8 @@ const scenes = Object.freeze({
 });
 let screen;                    //current state
 let time_sig_img, scale_img;   //image vars
+let melodyLocked = true;       //if melody is locked (for progression)
+let performLocked = true;      //if performance is locked
 
 // title screen buttons //
 let study_button, play_button;
@@ -205,13 +212,19 @@ function setup() {
     showElements(screen);
   });
 
-  // TODO: figure out how to lock things
-  song1_melody = createButton("Melody (not locked yet)");
+  // TODO: get rid of dev note
+  song1_melody = createButton("Melody");
+  song1_melody.text = melodyLocked ? "Melody 🔒" : "Melody 🔓";
   song1_melody.position(185, 220);
   song1_melody.mousePressed(() => {
-    hideElements(screen);
-    changeScene(scenes.s1melody);
-    showElements(screen);
+    if (melodyLocked) {
+      alert('Melody is locked until Rhythm has been completed.');
+      console.log('dev note: press d to unlock.');
+    } else {
+      hideElements(screen);
+      changeScene(scenes.s1melody);
+      showElements(screen);
+    }
   });
   song1_melody_practice = createButton("Practice");
   song1_melody_practice.position(250, 220);
@@ -221,12 +234,18 @@ function setup() {
     showElements(screen);
   });
 
-  song1_perform = createButton("Perform (not locked yet)");
+  song1_perform = createButton("Perform");
+  song1_perform.text = performLocked ? "Perform 🔒" : "Perform 🔓";
   song1_perform.position(185, 240);
   song1_perform.mousePressed(() => {
-    hideElements(screen);
-    changeScene(scenes.s1perform);
-    showElements(screen);
+    if (isLocked) {
+      alert('Perform is locked until Melody has been completed.');
+      console.log('dev note: press d to unlock');
+    } else {
+      hideElements(screen);
+      changeScene(scenes.s1perform);
+      showElements(screen);
+    }
   });
   song1_perform_practice = createButton("Practice");
   song1_perform_practice.position(250, 240);
@@ -464,6 +483,13 @@ function draw() {
     fill('black');
     textAlign(CENTER);
     text("error: draw() went outside the defined screens!", 250, 75);
+  }
+}
+
+function keyPressed() {
+  if (key == 'd' || key == 'D') {
+    melodyLocked = false;
+    performLocked = false;
   }
 }
 
