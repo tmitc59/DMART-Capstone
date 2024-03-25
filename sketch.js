@@ -238,7 +238,7 @@ function setup() {
   song1_perform.text = performLocked ? "Perform 🔒" : "Perform 🔓";
   song1_perform.position(185, 240);
   song1_perform.mousePressed(() => {
-    if (isLocked) {
+    if (performLocked) {
       alert('Perform is locked until Melody has been completed.');
       console.log('dev note: press d to unlock');
     } else {
