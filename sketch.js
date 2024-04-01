@@ -1,10 +1,4 @@
-/*
- * states = [title=0, study=1, rhythm_guide=2, scales=3, note_flashcards=4,
- *            play=5, song1=6,
- *                        song1_rhythm=7, song1_rhythm_practice=8,
- *                        song1_melody=9, song1_melody_practice=10,
- *                        song1_perform=11, song1_perform_practice=12,
- *            error=13 ]
+/**
  * 
  * accuracy: passing = 70%
  * 
@@ -18,9 +12,10 @@
  * - p5 button types: https://editor.p5js.org/jeffThompson/sketches/dmG6fvuWi
  * - hover text box: https://editor.p5js.org/xinxin/sketches/WEFVlnvSg
  * - headings: header2 = createElement('h2', 'what is your name?');
+ * - song ex: https://p5js.org/examples/hello-p5-song.html
 */
 
-/* keeps track of the states */
+/** the states (aka screens or scenes) in the app */
 const scenes = Object.freeze({
   title: 0,
   study: 1,
@@ -37,10 +32,12 @@ const scenes = Object.freeze({
   s1perform_practice: 12,
   error: 13
 });
-let screen;                    //current state
+
+/** current state / screen */  let screen;
 let time_sig_img, scale_img;   //image vars
 let melodyLocked = true;       //if melody is locked (for progression)
 let performLocked = true;      //if performance is locked
+let font;
 
 // title screen buttons //
 let study_button, play_button;
@@ -66,7 +63,69 @@ let c, c_sharp, d, d_sharp, e, f, f_sharp, g, g_sharp, a, a_sharp, b;
 // rhythm button //
 let rhythm_hit;
 
+// note flashcards vars //
+let cardWidth = 200, cardHeight = 150, frontColor = 100, backColor = 130;
+let isFlipped = false, flipAngle = 0, flipSpeed = 10;
+var flashcards = Object.freeze([
+  {
+    id: 0,
+    front: 'C',
+    back: 'C on the staff'
+  },
+  {
+    id: 1,
+    front: 'C#',
+    back: 'C# on the staff'
+  },
+  {
+    id: 2,
+    front: 'D',
+    back: 'D on the staff'
+  },
+  {
+    id: 3,
+    front: 'D#',
+    back: 'D# on the staff'
+  },
+  {
+    id: 4,
+    front: 'E',
+    back: 'E on the staff'
+  },
+  {
+    id: 5,
+    front: 'F',
+    back: 'F on the staff'
+  },
+  {
+    id: 6,
+    front: 'F#',
+    back: 'F# on the staff'
+  },
+  {
+    id: 7,
+    front: 'G',
+    back: 'G on the staff'
+  },
+  {
+    id: 8,
+    front: 'A',
+    back: 'A on the staff'
+  },
+  {
+    id: 9,
+    front: 'A#',
+    back: 'A# on the staff'
+  },
+  {
+    id: 10,
+    front: 'B',
+    back: 'B on the staff'
+  }
+]);
+
 function preload() {
+  font = loadFont('assets/inconsolata.otf');
   // cred: teacherspayteachers.com
   time_sig_img = loadImage('assets/time-sig.jpg');
   // cred: https://pianosecrets.com/wp-content/uploads/2019/10/330xNxnotes.png.pagespeed.ic_.XQb0I4IFUy.png
@@ -74,7 +133,10 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(500, 500, WEBGL);
+  textAlign(CENTER);
+  textFont(font);
+  textSize(15);
   screen = 0;
 
   if (screen == 0) {        // title screen
@@ -158,7 +220,6 @@ function setup() {
 
   ///////////////////////////////////////////////////////////////
   //// NOTE FLASHCARDS SCENE BUTTONS ////
-  // TODO: flashcards
   nf_back_button = createButton("Back");
   nf_back_button.position(30, 25);
   nf_back_button.mousePressed(() => {
@@ -205,16 +266,15 @@ function setup() {
     showElements(screen);
   });
   song1_rhythm_practice = createButton("Practice");
-  song1_rhythm_practice.position(250, 200);
+  song1_rhythm_practice.position(270, 200);
   song1_rhythm_practice.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.s1rhythm_practice);
     showElements(screen);
   });
 
-  // TODO: get rid of dev note
-  song1_melody = createButton("Melody");
-  song1_melody.text = melodyLocked ? "Melody 🔒" : "Melody 🔓";
+  // TODO: get rid of dev note?
+  song1_melody = createButton(melodyLocked ? "Melody 🔒" : "Melody 🔓");
   song1_melody.position(185, 220);
   song1_melody.mousePressed(() => {
     if (melodyLocked) {
@@ -227,16 +287,15 @@ function setup() {
     }
   });
   song1_melody_practice = createButton("Practice");
-  song1_melody_practice.position(250, 220);
+  song1_melody_practice.position(270, 221);
   song1_melody_practice.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.s1melody_practice);
     showElements(screen);
   });
 
-  song1_perform = createButton("Perform");
-  song1_perform.text = performLocked ? "Perform 🔒" : "Perform 🔓";
-  song1_perform.position(185, 240);
+  song1_perform = createButton(performLocked ? "Perform 🔒" : "Perform 🔓");
+  song1_perform.position(185, 242);
   song1_perform.mousePressed(() => {
     if (performLocked) {
       alert('Perform is locked until Melody has been completed.');
@@ -248,7 +307,7 @@ function setup() {
     }
   });
   song1_perform_practice = createButton("Practice");
-  song1_perform_practice.position(250, 240);
+  song1_perform_practice.position(270, 241);
   song1_perform_practice.mousePressed(() => {
     hideElements(screen);
     changeScene(scenes.s1perform_practice);
@@ -410,79 +469,94 @@ function setup() {
 }
 
 function draw() {
-  textSize(15);
-
   if (screen == scenes.title) {        // title screen
     background(220);
-    textAlign(CENTER);
-    text("MEOWsic", 250, 25);
+    fill('black');
+    text("MEOWsic", 0, -190);
   }
   else if (screen == scenes.study) {   // study screen
     background(200);
-    textAlign(CENTER);
-    text("Study", 445, 25);
+    fill('black');
+    text("Study", 0, -190);
   }
   else if (screen == scenes.rhythm_guide) {   // rhythm guide screen
     background(180);
-    image(time_sig_img, 15, -48);
+    image(time_sig_img, -235, -298);
   }
   else if (screen == scenes.scales_ref) {   // scales reference screen
     background(160);
-    textAlign(CENTER);
-    text("Scales Reference", 428, 25);
-    image(scale_img, 13, 150);
+    fill('black');
+    text("Scales Reference", 0, -190);
+    image(scale_img, -235, -100);
   }
   else if (screen == scenes.note_flashcards) {   // note flashcards screen
-    // TODO: flashcards
-    background(140);
-    textAlign(CENTER);
+    background(200);
     text("Note Reference", 432, 25);
+
+    // draw the card's shape
+    rotateY(radians(flipAngle));
+    fill(isFlipped ? backColor : frontColor);
+    rectMode(CENTER);
+    rect(0, 0, cardWidth, cardHeight);
+
+    // draw text
+    fill('black');
+    if (isFlipped) {
+      push();
+      rotateY(PI);
+      text(flashcards[1].front, 0, 0);
+      pop();
+    } else {
+      text(flashcards[1].back, 0, 0);
+    }
   }
   else if (screen == scenes.play) {   // play screen
     background(120);
-    textAlign(CENTER);
-    text("Play", 440, 25);
+    fill('black');
+    text("Play", 0, -190);
   }
   else if (screen == scenes.song1) {   // song 1 screen
-    background(100);
-    textAlign(CENTER);
-    text("Song 1", 440, 25);
+    background(119);
+    fill('black');
+    text("Song 1", 0, -190);
   }
   else if (screen == scenes.s1rhythm) {   // song 1 rhythm screen
-    background(80);
-    textAlign(CENTER);
-    text("Song 1 Rhythm", 435, 25);
+    background(90);
+    text("Song 1 Rhythm", 0, -190);
   }
   else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
-    background(80);
-    textAlign(CENTER);
-    text("Song 1 Rhythm Practice", 430, 25);
+    background(90);
+    text("Song 1 Rhythm Practice", 0, -190);
   }
   else if (screen == scenes.s1melody) {   // song 1 melody screen
-    background(60);
-    textAlign(CENTER);
-    text("Song 1 Melody", 435, 25);
+    background(80);
+    text("Song 1 Melody", 0, -190);
   }
   else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
-    background(60);
-    textAlign(CENTER);
-    text("Song 1 Melody Practice", 430, 25);
+    background(80);
+    text("Song 1 Melody Practice", 0, -190);
   }
   else if (screen == scenes.s1perform) {  // song 1 performance screen
-    background(40);
-    textAlign(CENTER);
-    text("Song 1 Performance", 430, 25);
+    background(80);
+    text("Song 1 Performance", 0, -190);
   }
   else if (screen == scenes.s1perform_practice) {  // song 1 performance practice screen
-    background(40);
-    textAlign(CENTER);
-    text("Song 1 Performance Practice", 425, 25);
+    background(80);
+    text("Song 1 Performance Practice", 0, -190);
   }
   else {
-    background("red");
+    background('red');
     fill('black');
-    textAlign(CENTER);
-    text("error: draw() went outside the defined screens!", 250, 75);
+    text("error: draw() went outside the defined screens!", -235, -100);
+  }
+}
+
+/** flip animation for the note flashcards */
+function flipAnimation() {
+  let targetAngle = isFlipped ? 180 : 0;
+  if (flipAngle < targetAngle) {
+    flipAngle += flipSpeed;
+    requestAnimationFrame(flipAnimation);
   }
 }
 
@@ -493,12 +567,34 @@ function keyPressed() {
   }
 }
 
-/* switches scenes using the scene number to swtich to (for example, 0=title) as an input */
+/** event handler for clicking inside the flashcard */
+function mouseClicked() {
+  // check if mouse is within the card bounds
+  if (
+    mouseX > width / 2 - cardWidth / 2 &&
+    mouseX < width / 2 + cardWidth / 2 &&
+    mouseY > height / 2 - cardHeight / 2 &&
+    mouseY < height / 2 + cardHeight / 2
+  ) {
+    // flip the card
+    isFlipped = !isFlipped;
+    flipAngle = 0;
+    flipAnimation();
+  }
+}
+
+/**
+ * switches scenes
+ * @param {!scenes} x change current screen to this screen number
+ */
 function changeScene(x) {
   screen = x;
 }
 
-/* hides the elements (buttons, etc.) from the screen in preperation to switch scenes */
+/**
+ * hides the elements (buttons, etc.) from the screen, usually before switching scenes
+ * @param {!scenes} x screen whose elements you're attempting to hide
+ */
 function hideElements(x) {
   switch (x) {
     case 0:          // hide elements from title screen
@@ -608,7 +704,10 @@ function hideElements(x) {
   }
 }
 
-/* shows the elements (buttons, etc.) on the screen after changing scenes */
+/**
+ * shows the elements (buttons, etc.) on the screen, usually after changing scenes
+ * @param {!scenes} x screen whose elements you're attempting to show
+ */
 function showElements(x) {
   switch (x) {
     case 0:          // hide elements from title screen
