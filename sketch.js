@@ -68,59 +68,9 @@ let cardWidth = 200, cardHeight = 150, frontColor = 100, backColor = 130;
 let isFlipped = false, flipAngle = 0, flipSpeed = 10;
 var flashcards = Object.freeze([
   {
-    id: 0,
-    front: 'C',
-    back: 'C on the staff'
-  },
-  {
     id: 1,
     front: 'C#',
     back: 'C# on the staff'
-  },
-  {
-    id: 2,
-    front: 'D',
-    back: 'D on the staff'
-  },
-  {
-    id: 3,
-    front: 'D#',
-    back: 'D# on the staff'
-  },
-  {
-    id: 4,
-    front: 'E',
-    back: 'E on the staff'
-  },
-  {
-    id: 5,
-    front: 'F',
-    back: 'F on the staff'
-  },
-  {
-    id: 6,
-    front: 'F#',
-    back: 'F# on the staff'
-  },
-  {
-    id: 7,
-    front: 'G',
-    back: 'G on the staff'
-  },
-  {
-    id: 8,
-    front: 'A',
-    back: 'A on the staff'
-  },
-  {
-    id: 9,
-    front: 'A#',
-    back: 'A# on the staff'
-  },
-  {
-    id: 10,
-    front: 'B',
-    back: 'B on the staff'
   }
 ]);
 
