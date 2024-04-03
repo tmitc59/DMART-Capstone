@@ -1,11 +1,10 @@
 /**
- * 
  * accuracy: passing = 70%
  * 
  * TODO LIST
  * - connect buttons to sound (rhythm & play mode)
  * - connect buttons to interaction (rhythm & play mode)
- * - note flashcards
+ * - more note flashcards
  * - save state / login?
  * 
  * for future reference:
@@ -470,7 +469,7 @@ function setup() {
 
 function draw() {
   if (screen == scenes.title) {        // title screen
-    background(220);
+    background('220');
     fill('black');
     text("MEOWsic", 0, -190);
   }
@@ -509,6 +508,7 @@ function draw() {
     } else {
       text(flashcards[1].back, 0, 0);
     }
+    // TODO: implement more flashcards
   }
   else if (screen == scenes.play) {   // play screen
     background(120);
