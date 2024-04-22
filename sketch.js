@@ -325,7 +325,7 @@ function setup() {
     showElements(screen);
   });
 
-  rhythm_hit = createButton("rhythm hit!");
+  rhythm_hit = createButton("Press");
   rhythm_hit.position(240, 450);
   rhythm_hit.mousePressed(() => {
     // TODO: make rhythm button do something
@@ -525,18 +525,11 @@ function draw() {
     text("Song 1 Rhythm", 0, -190);
     // Generate lines for the background
     stroke(255); // Set line color to white
-    strokeWeight(2); // Set line thickness
+    strokeWeight(4); // Set line thickness
     let lineSpacing = 20; // Spacing between lines
     for (let y = 0; y < height; y += lineSpacing) {
-      line(30, 20, 30, 80); // Draw horizontal lines
-      line(30, 50, 80, 50); // Draw vertical lines
-
-        // Draw circles moving from right to left on each horizontal line
-        let circleSpacing = 40; // Spacing between circles
-        for (let x = width - circleSpacing; x > 0; x -= circleSpacing) {
-            fill(255); // Set circle color to white
-            ellipse(x, y, 10, 10); // Draw circle
-        }
+      line(-150, -150, -150, 150); // Draw horizontal lines
+      line(-200, -10, 200, -10); // Draw vertical lines
     }
   }
   else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
@@ -547,6 +540,7 @@ function draw() {
     background(80);
     text("Song 1 Melody", 0, -190);
     // Generate lines for the background
+    //TODO make lines smaller
     stroke(255); // Set line color to white
     strokeWeight(4); // Set line thickness
     let numLines = 5; // Number of horizontal lines
@@ -556,7 +550,7 @@ function draw() {
         line(-215, y-150, 200, y-150); // Draw horizontal lines
     }
         strokeWeight(4); // Set line thickness
-    line(-215, 200, -215, -200); // Draw vertical line
+    line(-150, 175, -150, -175); // Draw vertical line
   }
   else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
     background(80);
