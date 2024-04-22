@@ -325,11 +325,11 @@ function setup() {
     showElements(screen);
   });
 
-  rhythm_hit = createButton(" ");
+  rhythm_hit = createButton("rhythm hit!");
   rhythm_hit.position(240, 450);
   rhythm_hit.mousePressed(() => {
     // TODO: make rhythm button do something
-    console.log('not implemented yet');
+    console.log('rhythm hit!');
   });
 
   hideElements(7);
@@ -550,13 +550,13 @@ function draw() {
     stroke(255); // Set line color to white
     strokeWeight(4); // Set line thickness
     let numLines = 5; // Number of horizontal lines
-    let lineSpacing = height / (numLines + 1); // Spacing between lines
+    let lineSpacing = height / (numLines + 5); // Spacing between lines
     for (let i = 1; i <= numLines; i++) {
         let y = i * lineSpacing;
-        line(10, y, width, y); // Draw horizontal lines
+        line(-215, y-150, 200, y-150); // Draw horizontal lines
     }
         strokeWeight(4); // Set line thickness
-    line(10, 0, 10, height); // Draw vertical line
+    line(-215, 200, -215, -200); // Draw vertical line
   }
   else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
     background(80);
