@@ -523,6 +523,21 @@ function draw() {
   else if (screen == scenes.s1rhythm) {   // song 1 rhythm screen
     background(90);
     text("Song 1 Rhythm", 0, -190);
+    // Generate lines for the background
+    stroke(255); // Set line color to white
+    strokeWeight(2); // Set line thickness
+    let lineSpacing = 20; // Spacing between lines
+    for (let y = 0; y < height; y += lineSpacing) {
+        line(0, y, width, y); // Draw horizontal lines
+        line(y, 0, y, height); // Draw vertical lines
+
+        // Draw circles moving from right to left on each horizontal line
+        let circleSpacing = 40; // Spacing between circles
+        for (let x = width - circleSpacing; x > 0; x -= circleSpacing) {
+            fill(255); // Set circle color to white
+            ellipse(x, y, 10, 10); // Draw circle
+        }
+    }
   }
   else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
     background(90);
