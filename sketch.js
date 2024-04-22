@@ -357,73 +357,73 @@ function setup() {
   });
 
   c = createButton('C');
-  c.position(50, 400);
+  c.position(150, 450);
   c.mousePressed(() => {
     console.log('C');
   });
 
   c_sharp = createButton('C#');
-  c_sharp.position(70, 350);
+  c_sharp.position(170, 400);
   c_sharp.mousePressed(() => {
     console.log('C#');
   });
 
   d = createButton('D');
-  d.position(90, 400);
+  d.position(190, 450);
   d.mousePressed(() => {
     console.log('D');
   });
 
   d_sharp = createButton('D#');
-  d_sharp.position(107, 350);
+  d_sharp.position(207, 400);
   d_sharp.mousePressed(() => {
     console.log('D#');
   });
 
   e = createButton('E');
-  e.position(130, 400);
+  e.position(230, 450);
   e.mousePressed(() => {
     console.log('E');
   });
 
   f = createButton('F');
-  f.position(170, 400);
+  f.position(270, 450);
   f.mousePressed(() => {
     console.log('F');
   });
 
   f_sharp = createButton('F#');
-  f_sharp.position(190, 350);
+  f_sharp.position(290, 400);
   f_sharp.mousePressed(() => {
     console.log('F#');
   });
 
   g = createButton('G');
-  g.position(210, 400);
+  g.position(310, 450);
   g.mousePressed(() => {
     console.log('G');
   });
 
   g_sharp = createButton('G#');
-  g_sharp.position(227, 350);
+  g_sharp.position(327, 400);
   g_sharp.mousePressed(() => {
     console.log('G#');
   });
 
   a = createButton('A');
-  a.position(250, 400);
+  a.position(350, 450);
   a.mousePressed(() => {
     console.log('A');
   });
 
   a_sharp = createButton('A#');
-  a_sharp.position(265, 350);
+  a_sharp.position(365, 400);
   a_sharp.mousePressed(() => {
     console.log('A#');
   });
 
   b = createButton('B');
-  b.position(290, 400);
+  b.position(390, 450);
   b.mousePressed(() => {
     console.log('B');
   });
