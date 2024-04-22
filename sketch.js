@@ -528,8 +528,8 @@ function draw() {
     strokeWeight(2); // Set line thickness
     let lineSpacing = 20; // Spacing between lines
     for (let y = 0; y < height; y += lineSpacing) {
-        line(0, y, width, y); // Draw horizontal lines
-        line(y, 0, y, height); // Draw vertical lines
+      line(30, 20, 30, 80); // Draw horizontal lines
+      line(30, 50, 80, 50); // Draw vertical lines
 
         // Draw circles moving from right to left on each horizontal line
         let circleSpacing = 40; // Spacing between circles
@@ -546,6 +546,17 @@ function draw() {
   else if (screen == scenes.s1melody) {   // song 1 melody screen
     background(80);
     text("Song 1 Melody", 0, -190);
+    // Generate lines for the background
+    stroke(255); // Set line color to white
+    strokeWeight(4); // Set line thickness
+    let numLines = 5; // Number of horizontal lines
+    let lineSpacing = height / (numLines + 1); // Spacing between lines
+    for (let i = 1; i <= numLines; i++) {
+        let y = i * lineSpacing;
+        line(10, y, width, y); // Draw horizontal lines
+    }
+        strokeWeight(4); // Set line thickness
+    line(10, 0, 10, height); // Draw vertical line
   }
   else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
     background(80);
