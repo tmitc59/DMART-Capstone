@@ -1,8 +1,25 @@
 html, body {
-    margin: 0;
-    padding: 0;
-  }
-  canvas {
-    display: block;
-  }
-  
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  display: block;
+}
+
+@font-face {
+  font-family: "Inconsolata";
+  src: url("assets/inconsolata.otf");
+}
+
+.title-buttons {
+  background-color: gold;
+  width: 130px;
+  font-size: 24px;
+  font-family: 'Inconsolata';
+}
+
+.buttons {
+  background-color: gold;
+  font-family: 'Inconsolata';
+}
