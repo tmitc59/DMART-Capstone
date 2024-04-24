@@ -29,7 +29,8 @@ const scenes = Object.freeze({
     s1melody_practice: 10,
     s1perform: 11,
     s1perform_practice: 12,
-    error: 13
+    start_screen: 13,
+    error: 14
 });
 
   /** current state / screen */  let screen;
@@ -37,6 +38,9 @@ let time_sig_img, scale_img;   //image vars
 let melodyLocked = true;       //if melody is locked (for progression)
 let performLocked = true;      //if performance is locked
 let font;
+
+// start screen buttons //
+let get_started;
 
 // title screen buttons //
 let study_button, play_button;
@@ -140,30 +144,45 @@ function setup() {
     textAlign(CENTER, CENTER);
     textFont(font);
     textSize(15);
-    screen = 0;
+    screen = 13;
 
-    if (screen == 0) {        // title screen
-        study_button = createButton("Study");
-        study_button.position(40, 140);
-        study_button.mousePressed(() => {
+    if (screen == scenes.start_screen) {        // get started screen
+        get_started = createButton("GET STARTED");
+        get_started.position(200, 600);
+        get_started.mousePressed(() => {
             hideElements(screen);
-            changeScene(scenes.study);
+            changeScene(scenes.title);
             showElements(screen);
         });
-        study_button.class('title-buttons');
-
-        play_button = createButton("Play");
-        play_button.position(40, 300);
-        play_button.mousePressed(() => {
-            hideElements(screen);
-            changeScene(scenes.play);
-            showElements(screen);
-        });
-        play_button.class('title-buttons');
-    } else if (screen = scenes.error || screen >= 13) {// error screen msg
+        get_started.style('background-color:black');
+        get_started.style('color:white');
+    } else if (screen = scenes.error || screen >= 14) {// error screen msg
         console.log(`error: setup() went outside the defined scenes! screen = ${screen}`);
         screen = 0;
     }
+
+
+    ///////////////////////////////////////////////////////////////
+    //// TITLE SCREEN BUTTONS ////
+    study_button = createButton("Study");
+    study_button.position(40, 140);
+    study_button.mousePressed(() => {
+        hideElements(screen);
+        changeScene(scenes.study);
+        showElements(screen);
+    });
+    study_button.class('title-buttons');
+
+    play_button = createButton("Play");
+    play_button.position(40, 300);
+    play_button.mousePressed(() => {
+        hideElements(screen);
+        changeScene(scenes.play);
+        showElements(screen);
+    });
+    play_button.class('title-buttons');
+
+    hideElements(0);
 
     ///////////////////////////////////////////////////////////////
     //// STUDY SCENE BUTTONS ////
@@ -349,7 +368,7 @@ function setup() {
     s1r_back_button.class('buttons');
 
     rhythm_hit = createButton("Press");
-    rhythm_hit.position(240, 450);
+    rhythm_hit.position(750, 650);
     rhythm_hit.mousePressed(() => {
         // TODO: make rhythm button do something
         console.log('rhythm hit!');
@@ -509,29 +528,28 @@ function setup() {
 }
 
 function draw() {
+    background('#760F13');
+
     if (screen == scenes.title) {        // title screen
-        background('220');
-        fill('black');
+        fill('white');
         text("MEOWsic", 0, -390);
     }
     else if (screen == scenes.study) {   // study screen
-        background(200);
-        fill('black');
+        fill('white');
         text("Study", 0, -390);
     }
     else if (screen == scenes.rhythm_guide) {   // rhythm guide screen
-        background(180);
+        fill('white');
         text("Rhythm Guide", 0, -390);
         image(time_sig_img, -235, -298);
     }
     else if (screen == scenes.scales_ref) {   // scales reference screen
-        background(160);
-        fill('black');
+        fill('white');
         text("Scales Reference", 0, -390);
         image(scale_img, -235, -100);
     }
     else if (screen == scenes.note_flashcards) {   // note flashcards screen
-        background(200);
+        fill('white');
         text("Note Reference", 0, -390);
 
         // draw the card's shape
@@ -553,22 +571,20 @@ function draw() {
         // TODO: implement more flashcards
     }
     else if (screen == scenes.play) {   // play screen
-        background(120);
-        fill('black');
+        fill('white');
         text("Play", 0, -390);
     }
     else if (screen == scenes.song1) {   // song 1 screen
-        background(119);
-        fill('black');
+        fill('white');
         text("Song 1", 0, -390);
     }
     else if (screen == scenes.s1rhythm) {   // song 1 rhythm screen
-        background(90);
+        fill('white');
         text("Song 1 Rhythm", 0, -390);
         // Generate lines for the background
         stroke(255); // Set line color to white
         strokeWeight(4); // Set line thickness
-        let lineSpacing = 15; // Spacing between lines
+        let lineSpacing = 1; // Spacing between lines
         for (let y = 0; y < height; y += lineSpacing) {
             line(-150, -150, -150, 150); // Draw horizontal lines
             line(-200, -10, 200, -10); // Draw vertical lines
@@ -596,7 +612,7 @@ function draw() {
         }
     }
     else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
-        background(90);
+        fill('white');
         text("Song 1 Rhythm Practice", 0, -390);
         // Generate lines for the background
         stroke(255); // Set line color to white
@@ -629,7 +645,7 @@ function draw() {
         }
     }
     else if (screen == scenes.s1melody) {   // song 1 melody screen
-        background(80);
+        fill('white');
         text("Song 1 Melody", 0, -390);
         // Generate lines for the background
         //TODO make lines smaller
@@ -645,7 +661,7 @@ function draw() {
         line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
-        background(80);
+        fill('white');
         text("Song 1 Melody Practice", 0, -390);
         // Generate lines for the background
         //TODO make lines smaller
@@ -661,12 +677,16 @@ function draw() {
         line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.s1perform) {  // song 1 performance screen
-        background(80);
+        fill('white');
         text("Song 1 Performance", 0, -390);
     }
     else if (screen == scenes.s1perform_practice) {  // song 1 performance practice screen
-        background(80);
+        fill('white');
         text("Song 1 Performance Practice", 0, -390);
+    }
+    else if (screen == scenes.start_screen) {
+        fill('white');
+        text('Music Education Online Workshop', -390, 0);
     }
     else {
         background('red');
@@ -827,6 +847,8 @@ function hideElements(x) {
             a_sharp.hide();
             b.hide();
             break;
+        case 13:         // hide elements from start screen
+            get_started.hide();
         default:         // hide elements from error message
             break;
     }
@@ -940,6 +962,8 @@ function showElements(x) {
             a_sharp.show();
             b.show();
             break;
+        case 13:
+            get_started.show();
         default:         // hide elements from error message
             break;
     }
