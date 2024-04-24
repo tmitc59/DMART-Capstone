@@ -60,7 +60,12 @@ let song1_rhythm, song1_rhythm_practice, song1_melody,
 let c, c_sharp, d, d_sharp, e, f, f_sharp, g, g_sharp, a, a_sharp, b;
 
 // rhythm button //
-let rhythm_hit;
+let rhythm_hit = false;
+
+//rhythm guide variables
+let lastSpawnTime = 0;
+let spawnInterval = 1000; // Interval between circle spawns in milliseconds
+
 
 // note flashcards vars //
 let cardWidth = 200, cardHeight = 150, frontColor = 100, backColor = 130;
@@ -530,6 +535,26 @@ function draw() {
     for (let y = 0; y < height; y += lineSpacing) {
       line(-150, -150, -150, 150); // Draw horizontal lines
       line(-200, -10, 200, -10); // Draw vertical lines
+    }
+    // Spawn circles that move across the horizontal line
+    strokeWeight(1);
+    fill(255, 0, 0); // Set circle color to red
+    let circleSpeed = 2; // Speed of circle movement
+    let circleSize = 10; // Size of circles
+    let xPos = 200; // Initial x-position of circles
+    let yPos = -150 + lineSpacing / 2; // Initial y-position of circles
+    let direction = -1; // Initial movement direction (left to right)
+    let spacing = 50; // Spacing between circles
+    let numCircles = 10; // Number of circles to spawn
+    for (let i = 0; i < numCircles; i++) {
+      ellipse(xPos, yPos, circleSize, circleSize); // Draw circle
+      xPos += spacing * direction; // Update x-position based on direction
+      // If circle goes beyond the left or right edge, reverse direction and reset position
+      if (xPos < -200 || xPos > 200) {
+        direction *= -1;
+        yPos += lineSpacing; // Move to the next horizontal line
+        xPos += spacing * direction; // Reset x-position
+      }
     }
   }
   else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
