@@ -33,7 +33,7 @@ const scenes = Object.freeze({
     error: 14
 });
 
-  /** current state / screen */  let screen;
+/** current state / screen */  let screen;
 let time_sig_img, scale_img;   //image vars
 let melodyLocked = true;       //if melody is locked (for progression)
 let performLocked = true;      //if performance is locked
@@ -66,9 +66,12 @@ let c, c_sharp, d, d_sharp, e, f, f_sharp, g, g_sharp, a, a_sharp, b;
 // rhythm button //
 let rhythm_hit = false;
 
-//rhythm guide variables
+// rhythm guide variables //
 let lastSpawnTime = 0;
 let spawnInterval = 1000; // Interval between circle spawns in milliseconds
+
+// music/sound variables //
+let noteSynth = new p5.MonoSynth();
 
 // note flashcards vars //
 let cardWidth = 200, cardHeight = 150, frontColor = 100, backColor = 130;
@@ -150,12 +153,14 @@ function setup() {
         get_started = createButton("GET STARTED");
         get_started.position(200, 600);
         get_started.mousePressed(() => {
+            userStartAudio();  // starts audio in the browser with user action
             hideElements(screen);
             changeScene(scenes.title);
             showElements(screen);
         });
         get_started.style('background-color:black');
         get_started.style('color:white');
+        get_started.style('font-weight:bold');
     } else if (screen = scenes.error || screen >= 14) {// error screen msg
         console.log(`error: setup() went outside the defined scenes! screen = ${screen}`);
         screen = 0;
@@ -404,84 +409,84 @@ function setup() {
     c = createButton('C');
     c.position(150, 450);
     c.mousePressed(() => {
-        console.log('C');
+        noteSynth.play('C4');
     });
     c.class('buttons');
 
     c_sharp = createButton('C#');
     c_sharp.position(170, 400);
     c_sharp.mousePressed(() => {
-        console.log('C#');
+        noteSynth.play('C#4');
     });
     c_sharp.class('buttons');
 
     d = createButton('D');
     d.position(190, 450);
     d.mousePressed(() => {
-        console.log('D');
+        noteSynth.play('D4');
     });
     d.class('buttons');
 
     d_sharp = createButton('D#');
     d_sharp.position(207, 400);
     d_sharp.mousePressed(() => {
-        console.log('D#');
+        noteSynth.play('D#4');
     });
     d_sharp.class('buttons');
 
     e = createButton('E');
     e.position(230, 450);
     e.mousePressed(() => {
-        console.log('E');
+        noteSynth.play('E4');
     });
     e.class('buttons');
 
     f = createButton('F');
     f.position(270, 450);
     f.mousePressed(() => {
-        console.log('F');
+        noteSynth.play('F4');
     });
     f.class('buttons');
 
     f_sharp = createButton('F#');
     f_sharp.position(290, 400);
     f_sharp.mousePressed(() => {
-        console.log('F#');
+        noteSynth.play('F#4');
     });
     f_sharp.class('buttons');
 
     g = createButton('G');
     g.position(310, 450);
     g.mousePressed(() => {
-        console.log('G');
+        noteSynth.play('G4');
     });
     g.class('buttons');
 
     g_sharp = createButton('G#');
     g_sharp.position(327, 400);
     g_sharp.mousePressed(() => {
-        console.log('G#');
+        noteSynth.play('G#4');
     });
     g_sharp.class('buttons');
 
     a = createButton('A');
     a.position(350, 450);
     a.mousePressed(() => {
-        console.log('A');
+        noteSynth.play('A5');
     });
     a.class('buttons');
 
     a_sharp = createButton('A#');
     a_sharp.position(365, 400);
     a_sharp.mousePressed(() => {
-        console.log('A#');
+        noteSynth.play('A#5');
     });
     a_sharp.class('buttons');
 
     b = createButton('B');
     b.position(390, 450);
     b.mousePressed(() => {
-        console.log('B');
+        noteSynth.play('B5');
     });
     b.class('buttons');
 
