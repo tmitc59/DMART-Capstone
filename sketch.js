@@ -34,10 +34,13 @@ const scenes = Object.freeze({
 });
 
 /** current state / screen */  let screen;
-let time_sig_img, scale_img;   //image vars
 let melodyLocked = true;       //if melody is locked (for progression)
 let performLocked = true;      //if performance is locked
 let font;
+
+// image vars //
+let time_sig_img, scale_img, title_piano_img, piano_img, button_img,
+    bg_img;
 
 // start screen buttons //
 let get_started;
@@ -136,10 +139,14 @@ var flashcards = Object.freeze([
 
 function preload() {
     font = loadFont('assets/inconsolata.otf');
-    // cred: teacherspayteachers.com
-    time_sig_img = loadImage('assets/time-sig.jpg');
-    // cred: https://pianosecrets.com/wp-content/uploads/2019/10/330xNxnotes.png.pagespeed.ic_.XQb0I4IFUy.png
-    scale_img = loadImage('assets/c_scale.png');
+    time_sig_img = loadImage('assets/time-sig.jpg');  // cred: teacherspayteachers.com
+    scale_img = loadImage('assets/c_scale.png');      // cred: https://pianosecrets.com/wp-content/uploads/2019/10/330xNxnotes.png.pagespeed.ic_.XQb0I4IFUy.png
+    
+    // original art created by Yongqi and Skylar
+    title_piano_img = loadImage('assets/meowsic_piano.png');
+    piano_img = loadImage('assets/piano.png')
+    button_img = loadImage('assets/button_bg.png');
+    bg_img = loadImage('assets/app_bg.jpeg');
 }
 
 function setup() {
@@ -161,6 +168,7 @@ function setup() {
         get_started.style('background-color:black');
         get_started.style('color:white');
         get_started.style('font-weight:bold');
+        get_started.style('justify-content:center');
     } else if (screen = scenes.error || screen >= 14) {// error screen msg
         console.log(`error: setup() went outside the defined scenes! screen = ${screen}`);
         screen = 0;
@@ -170,7 +178,7 @@ function setup() {
     ///////////////////////////////////////////////////////////////
     //// TITLE SCREEN BUTTONS ////
     study_button = createButton("Study");
-    study_button.position(40, 140);
+    study_button.position(150, 250);
     study_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.study);
@@ -179,7 +187,7 @@ function setup() {
     study_button.class('title-buttons');
 
     play_button = createButton("Play");
-    play_button.position(40, 300);
+    play_button.position(150, 550);
     play_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.play);
@@ -538,6 +546,9 @@ function draw() {
     if (screen == scenes.title) {        // title screen
         fill('white');
         text("MEOWsic", 0, -390);
+        image(button_img, -685, 70, 255, 124);
+        image(button_img, -685, -230, 255, 124);
+        image(piano_img, -650, -550, 1369, 1024);
     }
     else if (screen == scenes.study) {   // study screen
         fill('white');
@@ -691,7 +702,8 @@ function draw() {
     }
     else if (screen == scenes.start_screen) {
         fill('white');
-        text('Music Education Online Workshop', -390, 0);
+        text('Music Education Online Workshop', -445, 0);
+        image(title_piano_img, -650, -550, 1369, 1024);
     }
     else {
         background('red');
