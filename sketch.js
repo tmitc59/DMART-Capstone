@@ -69,9 +69,22 @@ let c, c_sharp, d, d_sharp, e, f, f_sharp, g, g_sharp, a, a_sharp, b;
 // rhythm button //
 let rhythm_hit = false;
 
-// rhythm guide variables //
+// Rhythm guide variables
 let lastSpawnTime = 0;
-let spawnInterval = 1000; // Interval between circle spawns in milliseconds
+let spawnInterval = 4000; // Interval between circle spawns in milliseconds
+let numCirclesSpawned = 0; // Number of circles spawned
+
+// Arrays to store circle positions
+let circleXPositions = [];
+let circleYPosition = -10;
+
+// Scoring variables
+let score = 0;
+let scoringWindow = 100; // Scoring window in pixels
+
+let rhythmHit = false; // Flag to indicate if rhythm hit occurred
+
+let song; // Variable to store the song
 
 // music/sound variables //
 let noteSynth = new p5.MonoSynth();
@@ -147,6 +160,8 @@ function preload() {
     piano_img = loadImage('assets/piano.png')
     button_img = loadImage('assets/button_bg.png');
     bg_img = loadImage('assets/app_bg.jpeg');
+
+    song = loadSound('assets/song1_Scales_melodyOnly.mp3');
 }
 
 function setup() {
@@ -381,9 +396,11 @@ function setup() {
     s1r_back_button.class('buttons');
 
     rhythm_hit = createButton("Press");
-    rhythm_hit.position(750, 650);
+    rhythm_hit.position(240, 450);
     rhythm_hit.mousePressed(() => {
-        // TODO: make rhythm button do something
+        // Remove all circles when the rhythm button is pressed
+    circleXPositions = [];
+    rhythmHit = true; // Set rhythm hit flag
         console.log('rhythm hit!');
     });
     rhythm_hit.class('buttons');
@@ -595,37 +612,55 @@ function draw() {
         text("Song 1", 0, -390);
     }
     else if (screen == scenes.s1rhythm) {   // song 1 rhythm screen
-        fill('white');
-        text("Song 1 Rhythm", 0, -390);
-        // Generate lines for the background
-        stroke(255); // Set line color to white
-        strokeWeight(4); // Set line thickness
-        let lineSpacing = 1; // Spacing between lines
-        for (let y = 0; y < height; y += lineSpacing) {
-            line(-150, -150, -150, 150); // Draw horizontal lines
-            line(-200, -10, 200, -10); // Draw vertical lines
-        }
-
-        // Spawn circles that move across the horizontal line
-        strokeWeight(1);
-        fill(255, 0, 0); // Set circle color to red
-        let circleSpeed = 2; // Speed of circle movement
-        let circleSize = 10; // Size of circles
-        let xPos = 200; // Initial x-position of circles
-        let yPos = -150 + lineSpacing / 2; // Initial y-position of circles
-        let direction = -1; // Initial movement direction (left to right)
-        let spacing = 50; // Spacing between circles
-        let numCircles = 10; // Number of circles to spawn
-        for (let i = 0; i < numCircles; i++) {
-            ellipse(xPos, yPos, circleSize, circleSize); // Draw circle
-            xPos += spacing * direction; // Update x-position based on direction
-            // If circle goes beyond the left or right edge, reverse direction and reset position
-            if (xPos < -200 || xPos > 200) {
-                direction *= -1;
-                yPos += lineSpacing; // Move to the next horizontal line
-                xPos += spacing * direction; // Reset x-position
-            }
-        }
+        background(90);
+  text("Song 1 Rhythm", 0, -190);
+  // Display score on screen
+  textSize(24);
+  fill(255);
+  text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
+  
+  // Generate lines for the background
+  stroke(255); // Set line color to white
+  strokeWeight(4); // Set line thickness
+  let lineSpacing = 20; // Spacing between lines
+  for (let y = 0; y < height; y += lineSpacing) {
+    line(-150, -150, -150, 150); // Draw horizontal lines
+    line(-200, -10, 200, -10); // Draw vertical lines
+  }
+  
+  // Check if it's time to spawn a circle
+  if (millis() - lastSpawnTime > spawnInterval && numCirclesSpawned < 10) {
+    spawnCircle(); // Spawn a circle
+    lastSpawnTime = millis(); // Update last spawn time
+    numCirclesSpawned++; // Increment the number of circles spawned
+  }
+  
+  // Move and display existing circles
+  strokeWeight(1);
+  fill(255, 0, 0); // Set circle color to red
+  let circleSize = 25; // Size of circles
+  // Move and display existing circles
+for (let i = 0; i < circleXPositions.length; i++) {
+  ellipse(circleXPositions[i], circleYPosition, circleSize, circleSize); // Draw circle
+  circleXPositions[i] -= 2; // Move the circle to the right
+  
+  // Check if the circle is within the scoring window
+  if (circleXPositions[i] <= -150 + scoringWindow && circleXPositions[i] >= -150 - scoringWindow) {
+    // Increment score if the circle is within the window
+    if (scoreCheck()) {
+      score++;
+      console.log('Score: ', score);
+    }
+    // Reset rhythmHit flag
+    rhythmHit = false;
+  }
+  
+  // Remove circles that reach the end of the line
+  if (circleXPositions[i] <= -200) {
+    circleXPositions.splice(i, 1);
+    i--; // Decrement i to account for removed circle
+  }
+}
     }
     else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
         fill('white');
@@ -721,11 +756,22 @@ function flipAnimation() {
     }
 }
 
+function spawnCircle() {
+    let xPos = 200; // Fixed x-position for all circles
+    circleXPositions.push(xPos); // Store the x-position of the circle
+  }
+
 function keyPressed() {
     if (key == 'd' || key == 'D') {
         melodyLocked = false;
         performLocked = false;
     }
+
+    // Remove all circles when the 'g' key is pressed
+  if (key === 'g') {
+    circleXPositions = [];
+    console.log('g key pressed!');
+  }
 }
 
 /** event handler for clicking inside the flashcard */
@@ -743,6 +789,21 @@ function mouseClicked() {
         flipAnimation();
     }
 }
+
+function scoreCheck() {
+    // Check if 'rhythm hit!' occurred and circle is on top of the lines
+    if (rhythmHit) {
+      for (let i = 0; i < circleXPositions.length; i++) {
+        if (circleXPositions[i] <= -150 + scoringWindow && circleXPositions[i] >= -150 - scoringWindow) {
+          console.log('rhythm hit!');
+          rhythmHit = false; // Reset rhythm hit flag
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
