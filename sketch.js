@@ -154,13 +154,14 @@ function preload() {
     font = loadFont('assets/inconsolata.otf');
     time_sig_img = loadImage('assets/time-sig.jpg');  // cred: teacherspayteachers.com
     scale_img = loadImage('assets/c_scale.png');      // cred: https://pianosecrets.com/wp-content/uploads/2019/10/330xNxnotes.png.pagespeed.ic_.XQb0I4IFUy.png
-    
+
     // original art created by Yongqi and Skylar
     title_piano_img = loadImage('assets/meowsic_piano.png');
     piano_img = loadImage('assets/piano.png')
     button_img = loadImage('assets/button_bg.png');
     bg_img = loadImage('assets/app_bg.jpeg');
 
+    // original music created by Taylor Stoddard
     song = loadSound('assets/song1_Scales_melodyOnly.mp3');
 }
 
@@ -221,10 +222,10 @@ function setup() {
         changeScene(scenes.title);     // back to title screen
         showElements(screen);
     });
-    study_back_button.class('buttons');
+    study_back_button.class('back-buttons');
 
     rhythm_guide_button = createButton("Rhythm Guide");
-    rhythm_guide_button.position(150, 150);
+    rhythm_guide_button.position(145, 253);
     rhythm_guide_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.rhythm_guide);
@@ -233,7 +234,7 @@ function setup() {
     rhythm_guide_button.class('buttons');
 
     scales_button = createButton("Scales Reference");
-    scales_button.position(150, 175);
+    scales_button.position(125, 405);
     scales_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.scales_ref);
@@ -242,7 +243,7 @@ function setup() {
     scales_button.class('buttons');
 
     notes_button = createButton("Note Flash Cards");
-    notes_button.position(150, 200);
+    notes_button.position(125, 554);
     notes_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.note_flashcards);
@@ -261,7 +262,7 @@ function setup() {
         changeScene(scenes.study);     // back to study screen
         showElements(screen);
     });
-    rg_back_button.class('buttons');
+    rg_back_button.class('back-buttons');
     hideElements(2);
 
     ///////////////////////////////////////////////////////////////
@@ -273,7 +274,7 @@ function setup() {
         changeScene(scenes.study);     // back to study screen
         showElements(screen);
     });
-    sr_back_button.class('buttons');
+    sr_back_button.class('back-buttons');
     hideElements(3);
 
     ///////////////////////////////////////////////////////////////
@@ -285,7 +286,7 @@ function setup() {
         changeScene(scenes.study);     // back to study screen
         showElements(screen);
     });
-    nf_back_button.class('buttons');
+    nf_back_button.class('back-buttons');
     hideElements(4);
 
     ///////////////////////////////////////////////////////////////
@@ -297,16 +298,17 @@ function setup() {
         changeScene(scenes.title);     // back to title screen
         showElements(screen);
     });
-    play_back_button.class('buttons');
+    play_back_button.class('back-buttons');
 
+    // change to match placard
     song1_button = createButton("Song 1");
-    song1_button.position(220, 200);
+    song1_button.position(154, 398);
     song1_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.song1);
         showElements(screen);
     });
-    song1_button.class('buttons');
+    song1_button.class('title-buttons');
     hideElements(5);
 
     ///////////////////////////////////////////////////////////////
@@ -318,18 +320,18 @@ function setup() {
         changeScene(scenes.play);     // back to play screen
         showElements(screen);
     });
-    s1_back_button.class('buttons');
+    s1_back_button.class('back-buttons');
 
     song1_rhythm = createButton("Rhythm");
-    song1_rhythm.position(185, 200);
+    song1_rhythm.position(180, 253);
     song1_rhythm.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.s1rhythm);
         showElements(screen);
     });
     song1_rhythm.class('buttons');
-    song1_rhythm_practice = createButton("Practice");
-    song1_rhythm_practice.position(270, 200);
+    song1_rhythm_practice = createButton("Rhythm Practice");
+    song1_rhythm_practice.position(386, 255);
     song1_rhythm_practice.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.s1rhythm_practice);
@@ -339,7 +341,7 @@ function setup() {
 
     // TODO: get rid of dev note?
     song1_melody = createButton(melodyLocked ? "Melody 🔒" : "Melody 🔓");
-    song1_melody.position(185, 220);
+    song1_melody.position(166, 400);
     song1_melody.mousePressed(() => {
         if (melodyLocked) {
             alert('Melody is locked until Rhythm has been completed.');
@@ -351,8 +353,8 @@ function setup() {
         }
     });
     song1_melody.class('buttons');
-    song1_melody_practice = createButton("Practice");
-    song1_melody_practice.position(270, 221);
+    song1_melody_practice = createButton("Melody Practice");
+    song1_melody_practice.position(386, 405);
     song1_melody_practice.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.s1melody_practice);
@@ -361,7 +363,7 @@ function setup() {
     song1_melody_practice.class('buttons');
 
     song1_perform = createButton(performLocked ? "Perform 🔒" : "Perform 🔓");
-    song1_perform.position(185, 242);
+    song1_perform.position(164, 552);
     song1_perform.mousePressed(() => {
         if (performLocked) {
             alert('Perform is locked until Melody has been completed.');
@@ -373,8 +375,8 @@ function setup() {
         }
     });
     song1_perform.class('buttons');
-    song1_perform_practice = createButton("Practice");
-    song1_perform_practice.position(270, 241);
+    song1_perform_practice = createButton("Perform. Practice");
+    song1_perform_practice.position(373, 555);
     song1_perform_practice.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.s1perform_practice);
@@ -393,17 +395,17 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
     });
-    s1r_back_button.class('buttons');
+    s1r_back_button.class('back-buttons');
 
     rhythm_hit = createButton("Press");
     rhythm_hit.position(240, 450);
     rhythm_hit.mousePressed(() => {
         // Remove all circles when the rhythm button is pressed
-    circleXPositions = [];
-    rhythmHit = true; // Set rhythm hit flag
+        circleXPositions = [];
+        rhythmHit = true; // Set rhythm hit flag
         console.log('rhythm hit!');
     });
-    rhythm_hit.class('buttons');
+    rhythm_hit.class('back-buttons');
 
     hideElements(7);
 
@@ -416,7 +418,7 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
     });
-    s1rp_back_button.class('buttons');
+    s1rp_back_button.class('back-buttons');
 
     hideElements(8);
 
@@ -429,91 +431,91 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
     });
-    s1m_back_button.class('buttons');
+    s1m_back_button.class('back-buttons');
 
     c = createButton('C');
     c.position(150, 450);
     c.mousePressed(() => {
         noteSynth.play('C4');
     });
-    c.class('buttons');
+    c.class('back-buttons');
 
     c_sharp = createButton('C#');
     c_sharp.position(170, 400);
     c_sharp.mousePressed(() => {
         noteSynth.play('C#4');
     });
-    c_sharp.class('buttons');
+    c_sharp.class('back-buttons');
 
     d = createButton('D');
     d.position(190, 450);
     d.mousePressed(() => {
         noteSynth.play('D4');
     });
-    d.class('buttons');
+    d.class('back-buttons');
 
     d_sharp = createButton('D#');
     d_sharp.position(207, 400);
     d_sharp.mousePressed(() => {
         noteSynth.play('D#4');
     });
-    d_sharp.class('buttons');
+    d_sharp.class('back-buttons');
 
     e = createButton('E');
     e.position(230, 450);
     e.mousePressed(() => {
         noteSynth.play('E4');
     });
-    e.class('buttons');
+    e.class('back-buttons');
 
     f = createButton('F');
     f.position(270, 450);
     f.mousePressed(() => {
         noteSynth.play('F4');
     });
-    f.class('buttons');
+    f.class('back-buttons');
 
     f_sharp = createButton('F#');
     f_sharp.position(290, 400);
     f_sharp.mousePressed(() => {
         noteSynth.play('F#4');
     });
-    f_sharp.class('buttons');
+    f_sharp.class('back-buttons');
 
     g = createButton('G');
     g.position(310, 450);
     g.mousePressed(() => {
         noteSynth.play('G4');
     });
-    g.class('buttons');
+    g.class('back-buttons');
 
     g_sharp = createButton('G#');
     g_sharp.position(327, 400);
     g_sharp.mousePressed(() => {
         noteSynth.play('G#4');
     });
-    g_sharp.class('buttons');
+    g_sharp.class('back-buttons');
 
     a = createButton('A');
     a.position(350, 450);
     a.mousePressed(() => {
         noteSynth.play('A5');
     });
-    a.class('buttons');
+    a.class('back-buttons');
 
     a_sharp = createButton('A#');
     a_sharp.position(365, 400);
     a_sharp.mousePressed(() => {
         noteSynth.play('A#5');
     });
-    a_sharp.class('buttons');
+    a_sharp.class('back-buttons');
 
     b = createButton('B');
     b.position(390, 450);
     b.mousePressed(() => {
         noteSynth.play('B5');
     });
-    b.class('buttons');
+    b.class('back-buttons');
 
     hideElements(9);
 
@@ -526,7 +528,7 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
     });
-    s1mp_back_button.class('buttons');
+    s1mp_back_button.class('back-buttons');
 
     hideElements(10);
 
@@ -539,7 +541,7 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
     });
-    s1p_back_button.class('buttons');
+    s1p_back_button.class('back-buttons');
 
     hideElements(11);
 
@@ -552,7 +554,7 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
     });
-    s1pp_back_button.class('buttons');
+    s1pp_back_button.class('back-buttons');
 
     hideElements(12);
 }
@@ -570,6 +572,9 @@ function draw() {
     else if (screen == scenes.study) {   // study screen
         fill('white');
         text("Study", 0, -390);
+        image(button_img, -685, 70, 255, 124);
+        image(button_img, -685, -80, 255, 124);
+        image(button_img, -685, -230, 255, 124);
     }
     else if (screen == scenes.rhythm_guide) {   // rhythm guide screen
         fill('white');
@@ -606,92 +611,117 @@ function draw() {
     else if (screen == scenes.play) {   // play screen
         fill('white');
         text("Play", 0, -390);
+        image(button_img, -685, -80, 255, 124);
     }
     else if (screen == scenes.song1) {   // song 1 screen
         fill('white');
         text("Song 1", 0, -390);
+        image(button_img, -685, 70, 255, 124);
+        image(button_img, -685, -80, 255, 124);
+        image(button_img, -685, -230, 255, 124);
+        image(button_img, -430, 70, 255, 124);
+        image(button_img, -430, -80, 255, 124);
+        image(button_img, -430, -230, 255, 124);
     }
     else if (screen == scenes.s1rhythm) {   // song 1 rhythm screen
         background(90);
-  text("Song 1 Rhythm", 0, -190);
-  // Display score on screen
-  textSize(24);
-  fill(255);
-  text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
-  
-  // Generate lines for the background
-  stroke(255); // Set line color to white
-  strokeWeight(4); // Set line thickness
-  let lineSpacing = 20; // Spacing between lines
-  for (let y = 0; y < height; y += lineSpacing) {
-    line(-150, -150, -150, 150); // Draw horizontal lines
-    line(-200, -10, 200, -10); // Draw vertical lines
-  }
-  
-  // Check if it's time to spawn a circle
-  if (millis() - lastSpawnTime > spawnInterval && numCirclesSpawned < 10) {
-    spawnCircle(); // Spawn a circle
-    lastSpawnTime = millis(); // Update last spawn time
-    numCirclesSpawned++; // Increment the number of circles spawned
-  }
-  
-  // Move and display existing circles
-  strokeWeight(1);
-  fill(255, 0, 0); // Set circle color to red
-  let circleSize = 25; // Size of circles
-  // Move and display existing circles
-for (let i = 0; i < circleXPositions.length; i++) {
-  ellipse(circleXPositions[i], circleYPosition, circleSize, circleSize); // Draw circle
-  circleXPositions[i] -= 2; // Move the circle to the right
-  
-  // Check if the circle is within the scoring window
-  if (circleXPositions[i] <= -150 + scoringWindow && circleXPositions[i] >= -150 - scoringWindow) {
-    // Increment score if the circle is within the window
-    if (scoreCheck()) {
-      score++;
-      console.log('Score: ', score);
-    }
-    // Reset rhythmHit flag
-    rhythmHit = false;
-  }
-  
-  // Remove circles that reach the end of the line
-  if (circleXPositions[i] <= -200) {
-    circleXPositions.splice(i, 1);
-    i--; // Decrement i to account for removed circle
-  }
-}
-    }
-    else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
-        fill('white');
-        text("Song 1 Rhythm Practice", 0, -390);
+        text("Song 1 Rhythm", 0, -190);
+        // Display score on screen
+        textSize(24);
+        fill(255);
+        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
+
         // Generate lines for the background
         stroke(255); // Set line color to white
         strokeWeight(4); // Set line thickness
-        let lineSpacing = 15; // Spacing between lines
+        let lineSpacing = 20; // Spacing between lines
         for (let y = 0; y < height; y += lineSpacing) {
             line(-150, -150, -150, 150); // Draw horizontal lines
             line(-200, -10, 200, -10); // Draw vertical lines
         }
 
-        // Spawn circles that move across the horizontal line
+        // Check if it's time to spawn a circle
+        if (millis() - lastSpawnTime > spawnInterval && numCirclesSpawned < 10) {
+            spawnCircle(); // Spawn a circle
+            lastSpawnTime = millis(); // Update last spawn time
+            numCirclesSpawned++; // Increment the number of circles spawned
+        }
+
+        // Move and display existing circles
         strokeWeight(1);
         fill(255, 0, 0); // Set circle color to red
-        let circleSpeed = 2; // Speed of circle movement
-        let circleSize = 10; // Size of circles
-        let xPos = 200; // Initial x-position of circles
-        let yPos = -150 + lineSpacing / 2; // Initial y-position of circles
-        let direction = -1; // Initial movement direction (left to right)
-        let spacing = 50; // Spacing between circles
-        let numCircles = 10; // Number of circles to spawn
-        for (let i = 0; i < numCircles; i++) {
-            ellipse(xPos, yPos, circleSize, circleSize); // Draw circle
-            xPos += spacing * direction; // Update x-position based on direction
-            // If circle goes beyond the left or right edge, reverse direction and reset position
-            if (xPos < -200 || xPos > 200) {
-                direction *= -1;
-                yPos += lineSpacing; // Move to the next horizontal line
-                xPos += spacing * direction; // Reset x-position
+        let circleSize = 25; // Size of circles
+        // Move and display existing circles
+        for (let i = 0; i < circleXPositions.length; i++) {
+            ellipse(circleXPositions[i], circleYPosition, circleSize, circleSize); // Draw circle
+            circleXPositions[i] -= 2; // Move the circle to the right
+
+            // Check if the circle is within the scoring window
+            if (circleXPositions[i] <= -150 + scoringWindow && circleXPositions[i] >= -150 - scoringWindow) {
+                // Increment score if the circle is within the window
+                if (scoreCheck()) {
+                    score++;
+                    console.log('Score: ', score);
+                }
+                // Reset rhythmHit flag
+                rhythmHit = false;
+            }
+
+            // Remove circles that reach the end of the line
+            if (circleXPositions[i] <= -200) {
+                circleXPositions.splice(i, 1);
+                i--; // Decrement i to account for removed circle
+            }
+        }
+    }
+    else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
+        background(90);
+        text("Song 1 Rhythm", 0, -190);
+        // Display score on screen
+        textSize(24);
+        fill(255);
+        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
+
+        // Generate lines for the background
+        stroke(255); // Set line color to white
+        strokeWeight(4); // Set line thickness
+        let lineSpacing = 20; // Spacing between lines
+        for (let y = 0; y < height; y += lineSpacing) {
+            line(-150, -150, -150, 150); // Draw horizontal lines
+            line(-200, -10, 200, -10); // Draw vertical lines
+        }
+
+        // Check if it's time to spawn a circle
+        if (millis() - lastSpawnTime > spawnInterval && numCirclesSpawned < 10) {
+            spawnCircle(); // Spawn a circle
+            lastSpawnTime = millis(); // Update last spawn time
+            numCirclesSpawned++; // Increment the number of circles spawned
+        }
+
+        // Move and display existing circles
+        strokeWeight(1);
+        fill(255, 0, 0); // Set circle color to red
+        let circleSize = 25; // Size of circles
+        // Move and display existing circles
+        for (let i = 0; i < circleXPositions.length; i++) {
+            ellipse(circleXPositions[i], circleYPosition, circleSize, circleSize); // Draw circle
+            circleXPositions[i] -= 2; // Move the circle to the right
+
+            // Check if the circle is within the scoring window
+            if (circleXPositions[i] <= -150 + scoringWindow && circleXPositions[i] >= -150 - scoringWindow) {
+                // Increment score if the circle is within the window
+                if (scoreCheck()) {
+                    score++;
+                    console.log('Score: ', score);
+                }
+                // Reset rhythmHit flag
+                rhythmHit = false;
+            }
+
+            // Remove circles that reach the end of the line
+            if (circleXPositions[i] <= -200) {
+                circleXPositions.splice(i, 1);
+                i--; // Decrement i to account for removed circle
             }
         }
     }
@@ -730,10 +760,34 @@ for (let i = 0; i < circleXPositions.length; i++) {
     else if (screen == scenes.s1perform) {  // song 1 performance screen
         fill('white');
         text("Song 1 Performance", 0, -390);
+        // Generate lines for the background
+        //TODO make lines smaller
+        stroke(255); // Set line color to white
+        strokeWeight(4); // Set line thickness
+        let numLines = 5; // Number of horizontal lines
+        let lineSpacing = height / (numLines + 5); // Spacing between lines
+        for (let i = 1; i <= numLines; i++) {
+            let y = i * lineSpacing;
+            line(-215, y - 150, 200, y - 150); // Draw horizontal lines
+        }
+        strokeWeight(4); // Set line thickness
+        line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.s1perform_practice) {  // song 1 performance practice screen
         fill('white');
         text("Song 1 Performance Practice", 0, -390);
+        // Generate lines for the background
+        //TODO make lines smaller
+        stroke(255); // Set line color to white
+        strokeWeight(4); // Set line thickness
+        let numLines = 5; // Number of horizontal lines
+        let lineSpacing = height / (numLines + 5); // Spacing between lines
+        for (let i = 1; i <= numLines; i++) {
+            let y = i * lineSpacing;
+            line(-215, y - 150, 200, y - 150); // Draw horizontal lines
+        }
+        strokeWeight(4); // Set line thickness
+        line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.start_screen) {
         fill('white');
@@ -759,7 +813,7 @@ function flipAnimation() {
 function spawnCircle() {
     let xPos = 200; // Fixed x-position for all circles
     circleXPositions.push(xPos); // Store the x-position of the circle
-  }
+}
 
 function keyPressed() {
     if (key == 'd' || key == 'D') {
@@ -768,10 +822,10 @@ function keyPressed() {
     }
 
     // Remove all circles when the 'g' key is pressed
-  if (key === 'g') {
-    circleXPositions = [];
-    console.log('g key pressed!');
-  }
+    if (key === 'g') {
+        circleXPositions = [];
+        console.log('g key pressed!');
+    }
 }
 
 /** event handler for clicking inside the flashcard */
@@ -793,17 +847,17 @@ function mouseClicked() {
 function scoreCheck() {
     // Check if 'rhythm hit!' occurred and circle is on top of the lines
     if (rhythmHit) {
-      for (let i = 0; i < circleXPositions.length; i++) {
-        if (circleXPositions[i] <= -150 + scoringWindow && circleXPositions[i] >= -150 - scoringWindow) {
-          console.log('rhythm hit!');
-          rhythmHit = false; // Reset rhythm hit flag
-          return true;
+        for (let i = 0; i < circleXPositions.length; i++) {
+            if (circleXPositions[i] <= -150 + scoringWindow && circleXPositions[i] >= -150 - scoringWindow) {
+                console.log('rhythm hit!');
+                rhythmHit = false; // Reset rhythm hit flag
+                return true;
+            }
         }
-      }
     }
     return false;
-  }
-  
+}
+
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);

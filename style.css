@@ -23,7 +23,16 @@ canvas {
 }
 
 .buttons {
-  background-color: gold;
+  background-color: transparent;
+  font-family: 'Inconsolata';
+  justify-content: center;
+  font-weight: bolder;
+  border: none;
+  font-size: 22px;
+}
+
+.back-buttons {
+  background-color: #eedd8d;
   font-family: 'Inconsolata';
   justify-content: center;
 }
