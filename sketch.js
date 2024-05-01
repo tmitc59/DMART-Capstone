@@ -50,7 +50,7 @@ let font;
 
 // image vars //
 let time_sig_img, scale_img, title_piano_img, piano_img, button_img,
-    bg_img, c_img, d_img, e_img, f_img, g_img, a_img, b_img;
+    bg_img, c_img, d_img, e_img, f_img, g_img, a_img, b_img, cat_img;
 
 // start screen buttons //
 let get_started;
@@ -61,7 +61,8 @@ let study_button, play_button;
 // back buttons //
 let study_back_button, rg_back_button, sr_back_button, nf_back_button,
     play_back_button, s1_back_button, s1r_back_button, s1rp_back_button,
-    s1m_back_button, s1mp_back_button, s1p_back_button, s1pp_back_button;
+    s1m_back_button, s1mp_back_button, s1p_back_button, s1pp_back_button,
+    title_back_button;
 
 // study screen buttons //
 let rhythm_guide_button, scales_button, notes_button, title_button;
@@ -104,57 +105,57 @@ let cardWidth = 200, cardHeight = 150, frontColor = 100, backColor = 130;
 let isFlipped = false, flipAngle = 0, flipSpeed = 10;
 var flashcards = Object.freeze([
     {
-        id: 0,
+        // id: 0,
         front: 'C',
         back: c_img
     },
     {
-        id: 1,
+        // id: 1,
         front: 'C#',
         back: 'C# on the staff'
     },
     {
-        id: 2,
+        // id: 2,
         front: 'D',
         back: d_img
     },
     {
-        id: 3,
+        // id: 3,
         front: 'D#',
         back: 'D# on the staff'
     },
     {
-        id: 4,
+        // id: 4,
         front: 'E',
         back: e_img
     },
     {
-        id: 5,
+        // id: 5,
         front: 'F',
         back: f_img
     },
     {
-        id: 6,
+        // id: 6,
         front: 'F#',
         back: 'F# on the staff'
     },
     {
-        id: 7,
+        // id: 7,
         front: 'G',
         back: g_img
     },
     {
-        id: 8,
+        // id: 8,
         front: 'A',
         back: a_img
     },
     {
-        id: 9,
+        // id: 9,
         front: 'A#',
         back: 'A# on the staff'
     },
     {
-        id: 10,
+        // id: 10,
         front: 'B',
         back: b_img
     }
@@ -167,19 +168,20 @@ function preload() {
 
     // cred: https://www.quia.com/jg/1622622list.html
     // note flashcard images //
-    c_img = loadImage('assets/middle-c.png');
-    d_img = loadImage('assets/d.png');
-    e_img = loadImage('assets/e.png');
-    f_img = loadImage('assets/f.png');
-    g_img = loadImage('assets/g.png');
-    a_img = loadImage('assets/a.png');
-    b_img = loadImage('assets/b.png');
+    flashcards[0].back = loadImage('assets/middle-c.png');
+    flashcards[2].back = loadImage('assets/d.png');
+    flashcards[4].back = loadImage('assets/e.png');
+    flashcards[5].back = loadImage('assets/f.png');
+    flashcards[7].back = loadImage('assets/g.png');
+    flashcards[8].back = loadImage('assets/a.png');
+    flashcards[10].back = loadImage('assets/b.png');
 
     // original art created by Yongqi Ding and Skylar Norton
     title_piano_img = loadImage('assets/meowsic_piano.png');
     piano_img = loadImage('assets/piano.png')
     button_img = loadImage('assets/button_bg.png');
     bg_img = loadImage('assets/app_bg.jpeg');
+    cat_img = loadImage('assets/cat.png')
 
     // original music created by Taylor Stoddard
     song = loadSound('assets/song1_Scales_melodyOnly.mp3');
@@ -213,6 +215,15 @@ function setup() {
 
     ///////////////////////////////////////////////////////////////
     //// TITLE SCREEN BUTTONS ////
+    title_back_button = createButton("Back");
+    title_back_button.position(30, 25);
+    title_back_button.mousePressed(() => {
+        hideElements(screen);
+        changeScene(scenes.start_screen);
+        showElements(screen);
+    });
+    title_back_button.class('back-buttons');
+
     study_button = createButton("Study");
     study_button.position(150, 250);
     study_button.mousePressed(() => {
@@ -581,13 +592,14 @@ function setup() {
 
 function draw() {
     background('#760F13');
+    image(bg_img, -770, -460, windowWidth, windowHeight+24);
 
     if (screen == scenes.title) {        // title screen
         fill('white');
         text("MEOWsic", 0, -390);
         image(button_img, -685, 70, 255, 124);
         image(button_img, -685, -230, 255, 124);
-        image(piano_img, -650, -550, 1369, 1024);
+        image(piano_img, -650, -463, 1369, 1024);
     }
     else if (screen == scenes.study) {   // study screen
         fill('white');
@@ -595,6 +607,7 @@ function draw() {
         image(button_img, -685, 70, 255, 124);
         image(button_img, -685, -80, 255, 124);
         image(button_img, -685, -230, 255, 124);
+        image(cat_img, 105, -100, 400, 450);
     }
     else if (screen == scenes.rhythm_guide) {   // rhythm guide screen
         fill('white');
@@ -621,7 +634,7 @@ function draw() {
         if (isFlipped) {
             push();
             rotateY(PI);
-            image(c_img, -52, -45, 100, 100);
+            image(flashcards[0].back, -52, -45, 100, 100);
             pop();
         } else {
             text(flashcards[0].front, 0, 0);
@@ -632,6 +645,7 @@ function draw() {
         fill('white');
         text("Play", 0, -390);
         image(button_img, -685, -80, 255, 124);
+        image(cat_img, 105, -100, 400, 450);
     }
     else if (screen == scenes.song1) {   // song 1 screen
         fill('white');
@@ -642,6 +656,7 @@ function draw() {
         image(button_img, -430, 70, 255, 124);
         image(button_img, -430, -80, 255, 124);
         image(button_img, -430, -230, 255, 124);
+        image(cat_img, 105, -100, 400, 450);
     }
     else if (screen == scenes.s1rhythm) {   // song 1 rhythm screen
         background(90);
@@ -812,7 +827,7 @@ function draw() {
     else if (screen == scenes.start_screen) {
         fill('white');
         text('Music Education Online Workshop', -445, 0);
-        image(title_piano_img, -650, -550, 1369, 1024);
+        image(title_piano_img, -650, -463, 1369, 1024);
     }
     else {
         background('red');
@@ -898,6 +913,7 @@ function changeScene(x) {
 function hideElements(x) {
     switch (x) {
         case 0:          // hide elements from title screen
+            title_back_button.hide();
             study_button.hide();
             play_button.hide();
             break;
@@ -1013,6 +1029,7 @@ function hideElements(x) {
 function showElements(x) {
     switch (x) {
         case 0:          // hide elements from title screen
+            title_back_button.show();
             study_button.show();
             play_button.show();
             break;
