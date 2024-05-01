@@ -95,27 +95,7 @@ let scoringWindow = 100; // Scoring window in pixels
 
 let rhythmHit = false; // Flag to indicate if rhythm hit occurred
 
-let circleSpeed = -1; // Speed of circle movement
-
-// Object to store arrays of circles for each note
-let noteCircles = {
-    C: [],
-    D: [],
-    E: [],
-    F: [],
-    G: [],
-    A: [],
-    B: []
-};
-
-// Variable to keep track of the current note being spawned
-let currentNoteIndex = 0;
-
-// Global circle size variable
-let circleSize = 25; // Circle size
-
-let song; // Variable to store the song for rhythm and melody
-let song1; // Variable to store the song for performance
+let song; // Variable to store the song
 
 // music/sound variables //
 let noteSynth = new p5.MonoSynth();
@@ -205,7 +185,6 @@ function preload() {
 
     // original music created by Taylor Stoddard
     song = loadSound('assets/song1_Scales_melodyOnly.mp3');
-    song1 = loadSound('assets/song1 master1 .mp3');
 }
 
 function setup() {
@@ -451,7 +430,6 @@ function setup() {
 
     rhythm_hit = createButton("Press");
     rhythm_hit.position(240, 450);
-    song.play();
     rhythm_hit.mousePressed(() => {
         // Remove all circles when the rhythm button is pressed
         circleXPositions = [];
@@ -466,7 +444,6 @@ function setup() {
     //// SONG 1 RHYTHM PRACTICE SCENE BUTTONS ////
     s1rp_back_button = createButton("Back");
     s1rp_back_button.position(30, 25);
-    song.play();
     s1rp_back_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
@@ -480,7 +457,6 @@ function setup() {
     //// SONG 1 MELODY SCENE BUTTONS ////
     s1m_back_button = createButton("Back");
     s1m_back_button.position(30, 25);
-    song.play();
     s1m_back_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
@@ -578,7 +554,6 @@ function setup() {
     //// SONG 1 MELODY PRACTICE SCENE BUTTONS ////
     s1mp_back_button = createButton("Back");
     s1mp_back_button.position(30, 25);
-    song.play();
     s1mp_back_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
@@ -592,7 +567,6 @@ function setup() {
     //// SONG 1 PERFORMANCE SCENE BUTTONS ////
     s1p_back_button = createButton("Back");
     s1p_back_button.position(30, 25);
-    song.play();
     s1p_back_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
@@ -618,7 +592,7 @@ function setup() {
 
 function draw() {
     background('#760F13');
-    image(bg_img, -770, -460, windowWidth, windowHeight + 24);
+    image(bg_img, -770, -460, windowWidth, windowHeight+24);
 
     if (screen == scenes.title) {        // title screen
         fill('white');
@@ -690,7 +664,7 @@ function draw() {
         // Display score on screen
         textSize(24);
         fill(255);
-        //text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
+        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
 
         // Generate lines for the background
         stroke(255); // Set line color to white
@@ -787,481 +761,379 @@ function draw() {
         }
     }
     else if (screen == scenes.s1melody) {   // song 1 melody screen
-        background(90); // Clear the background
-
-        // Display text
         fill('white');
-        textSize(24);
-        textAlign(CENTER, CENTER);
-        text("Song 1 Melody", 0, -200);
-        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
-
+        text("Song 1 Melody", 0, -390);
         // Generate lines for the background
-        stroke(0); // Set line color to white
+        //TODO make lines smaller
+        stroke(255); // Set line color to white
         strokeWeight(4); // Set line thickness
-        let numLines = 7; // Number of horizontal lines
+        let numLines = 5; // Number of horizontal lines
         let lineSpacing = height / (numLines + 5); // Spacing between lines
         for (let i = 1; i <= numLines; i++) {
             let y = i * lineSpacing;
             line(-215, y - 150, 200, y - 150); // Draw horizontal lines
         }
+        strokeWeight(4); // Set line thickness
         line(-150, 175, -150, -175); // Draw vertical line
-
-        // Spawn circles for each note
-        for (let note in noteCircles) {
-            if (noteCircles.hasOwnProperty(note)) {
-                spawnCircle(note);
-            }
-        }
-
-        // Draw circles
-        for (let note in noteCircles) {
-            if (noteCircles.hasOwnProperty(note)) {
-                for (let circle of noteCircles[note]) {
-                    // Draw circle
-                    fill(255, 0, 0); // Red color
-                    ellipse(circle.x, circle.y, circleSize, circleSize);
-                }
-            }
-        }
     }
     else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
-        background(90); // Clear the background
-
-        // Display text
         fill('white');
-        textSize(24);
-        textAlign(CENTER, CENTER);
-        text("Song 1 Melody", 0, -200);
-        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
-
+        text("Song 1 Melody Practice", 0, -390);
         // Generate lines for the background
-        stroke(0); // Set line color to white
+        //TODO make lines smaller
+        stroke(255); // Set line color to white
         strokeWeight(4); // Set line thickness
-        let numLines = 7; // Number of horizontal lines
+        let numLines = 5; // Number of horizontal lines
         let lineSpacing = height / (numLines + 5); // Spacing between lines
         for (let i = 1; i <= numLines; i++) {
             let y = i * lineSpacing;
             line(-215, y - 150, 200, y - 150); // Draw horizontal lines
         }
+        strokeWeight(4); // Set line thickness
         line(-150, 175, -150, -175); // Draw vertical line
-
-        // Spawn circles for each note
-        for (let note in noteCircles) {
-            if (noteCircles.hasOwnProperty(note)) {
-                spawnCircle(note);
-            }
-        }
-
-        // Draw circles
-        for (let note in noteCircles) {
-            if (noteCircles.hasOwnProperty(note)) {
-                for (let circle of noteCircles[note]) {
-                    // Draw circle
-                    fill(255, 0, 0); // Red color
-                    ellipse(circle.x, circle.y, circleSize, circleSize);
-                }
-            }
-        }
     }
     else if (screen == scenes.s1perform) {  // song 1 performance screen
-        background(90); // Clear the background
         fill('white');
-        textSize(24);
-        textAlign(CENTER, CENTER);
-        text("Song 1 Melody", 0, -200);
-        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
+        text("Song 1 Performance", 0, -390);
         // Generate lines for the background
         //TODO make lines smaller
-        stroke(0); // Set line color to white
+        stroke(255); // Set line color to white
         strokeWeight(4); // Set line thickness
-        let numLines = 7; // Number of horizontal lines
+        let numLines = 5; // Number of horizontal lines
         let lineSpacing = height / (numLines + 5); // Spacing between lines
         for (let i = 1; i <= numLines; i++) {
             let y = i * lineSpacing;
             line(-215, y - 150, 200, y - 150); // Draw horizontal lines
         }
+        strokeWeight(4); // Set line thickness
         line(-150, 175, -150, -175); // Draw vertical line
-
-        // Spawn circles for each note
-        for (let note in noteCircles) {
-            if (noteCircles.hasOwnProperty(note)) {
-                spawnCircle(note);
-            }
-        }
-
-        // Draw circles
-        for (let note in noteCircles) {
-            if (noteCircles.hasOwnProperty(note)) {
-                for (let circle of noteCircles[note]) {
-                    // Draw circle
-                    fill(255, 0, 0); // Red color
-                    ellipse(circle.x, circle.y, circleSize, circleSize);
-                }
-            }
-        }
     }
     else if (screen == scenes.s1perform_practice) {  // song 1 performance practice screen
-        background(90); // Clear the background
         fill('white');
-        textSize(24);
-        textAlign(CENTER, CENTER);
-        text("Song 1 Melody", 0, -200);
-        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
+        text("Song 1 Performance Practice", 0, -390);
         // Generate lines for the background
         //TODO make lines smaller
-        stroke(0); // Set line color to white
+        stroke(255); // Set line color to white
         strokeWeight(4); // Set line thickness
-        let numLines = 7; // Number of horizontal lines
+        let numLines = 5; // Number of horizontal lines
         let lineSpacing = height / (numLines + 5); // Spacing between lines
         for (let i = 1; i <= numLines; i++) {
             let y = i * lineSpacing;
             line(-215, y - 150, 200, y - 150); // Draw horizontal lines
         }
+        strokeWeight(4); // Set line thickness
         line(-150, 175, -150, -175); // Draw vertical line
+    }
+    else if (screen == scenes.start_screen) {
+        fill('white');
+        text('Music Education Online Workshop', -445, 0);
+        image(title_piano_img, -650, -463, 1369, 1024);
+    }
+    else {
+        background('red');
+        fill('black');
+        text("error: draw() went outside the defined screens!", -235, -100);
+    }
+}
 
-        // Spawn circles for each note
-        for (let note in noteCircles) {
-            if (noteCircles.hasOwnProperty(note)) {
-                spawnCircle(note);
+/** flip animation for the note flashcards */
+function flipAnimation() {
+    let targetAngle = isFlipped ? 180 : 0;
+    if (flipAngle < targetAngle) {
+        flipAngle += flipSpeed;
+        requestAnimationFrame(flipAnimation);
+    }
+}
+
+function spawnCircle() {
+    let xPos = 200; // Fixed x-position for all circles
+    circleXPositions.push(xPos); // Store the x-position of the circle
+}
+
+function keyPressed() {
+    if (key == 'd' || key == 'D') {
+        melodyLocked = false;
+        performLocked = false;
+    }
+
+    // Remove all circles when the 'g' key is pressed
+    if (key === 'g') {
+        circleXPositions = [];
+        console.log('g key pressed!');
+    }
+}
+
+/** event handler for clicking inside the flashcard */
+function mouseClicked() {
+    // check if mouse is within the card bounds
+    if (
+        mouseX > width / 2 - cardWidth / 2 &&
+        mouseX < width / 2 + cardWidth / 2 &&
+        mouseY > height / 2 - cardHeight / 2 &&
+        mouseY < height / 2 + cardHeight / 2
+    ) {
+        // flip the card
+        isFlipped = !isFlipped;
+        flipAngle = 0;
+        flipAnimation();
+    }
+}
+
+function scoreCheck() {
+    // Check if 'rhythm hit!' occurred and circle is on top of the lines
+    if (rhythmHit) {
+        for (let i = 0; i < circleXPositions.length; i++) {
+            if (circleXPositions[i] <= -150 + scoringWindow && circleXPositions[i] >= -150 - scoringWindow) {
+                console.log('rhythm hit!');
+                rhythmHit = false; // Reset rhythm hit flag
+                return true;
             }
         }
-
-        // Draw circles
-        for (let note in noteCircles) {
-            if (noteCircles.hasOwnProperty(note)) {
-                for (let circle of noteCircles[note]) {
-                    // Draw circle
-                    fill(255, 0, 0); // Red color
-                    ellipse(circle.x, circle.y, circleSize, circleSize);
-                }
-            }
-        }
     }
+    return false;
+}
 
-    /** flip animation for the note flashcards */
-    function flipAnimation() {
-        let targetAngle = isFlipped ? 180 : 0;
-        if (flipAngle < targetAngle) {
-            flipAngle += flipSpeed;
-            requestAnimationFrame(flipAnimation);
-        }
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+
+/**
+ * switches scenes
+ * @param {!scenes} x change current screen to this screen number
+ */
+function changeScene(x) {
+    screen = x;
+}
+
+/**
+ * hides the elements (buttons, etc.) from the screen, usually before switching scenes
+ * @param {!scenes} x screen whose elements you're attempting to hide
+ */
+function hideElements(x) {
+    switch (x) {
+        case 0:          // hide elements from title screen
+            title_back_button.hide();
+            study_button.hide();
+            play_button.hide();
+            break;
+
+        case 1:          // hide elements from study screen
+            study_back_button.hide();
+            rhythm_guide_button.hide();
+            scales_button.hide();
+            notes_button.hide();
+            break;
+        case 2:          // hide elements from rhythm guide
+            rg_back_button.hide();
+            break;
+        case 3:          // hide elements from scales guide
+            sr_back_button.hide();
+            break;
+        case 4:          // hide elements from note flashcards
+            nf_back_button.hide();
+            break;
+
+        case 5:          // hide elements from play screen
+            play_back_button.hide();
+            song1_button.hide();
+            break;
+        case 6:          // hide elements from song 1 screen
+            s1_back_button.hide();
+            song1_rhythm.hide();
+            song1_rhythm_practice.hide();
+            song1_melody.hide();
+            song1_melody_practice.hide();
+            song1_perform.hide();
+            song1_perform_practice.hide();
+            break;
+        case 7:          // hide elements from song 1 rhythm
+            s1r_back_button.hide();
+            rhythm_hit.hide();
+            break;
+        case 8:          // hide elements from song 1 rhythm practice
+            s1rp_back_button.hide();
+            rhythm_hit.hide();
+            break;
+        case 9:          // hide elements from song 1 melody
+            s1m_back_button.hide();
+            c.hide();
+            c_sharp.hide();
+            d.hide();
+            d_sharp.hide();
+            e.hide();
+            f.hide();
+            f_sharp.hide();
+            g.hide();
+            g_sharp.hide();
+            a.hide();
+            a_sharp.hide();
+            b.hide();
+            break;
+        case 10:         // hide elements from song 1 melody practice
+            s1mp_back_button.hide();
+            c.hide();
+            c_sharp.hide();
+            d.hide();
+            d_sharp.hide();
+            e.hide();
+            f.hide();
+            f_sharp.hide();
+            g.hide();
+            g_sharp.hide();
+            a.hide();
+            a_sharp.hide();
+            b.hide();
+            break;
+        case 11:         // hide elements from song 1 performance
+            s1p_back_button.hide();
+            c.hide();
+            c_sharp.hide();
+            d.hide();
+            d_sharp.hide();
+            e.hide();
+            f.hide();
+            f_sharp.hide();
+            g.hide();
+            g_sharp.hide();
+            a.hide();
+            a_sharp.hide();
+            b.hide();
+            break;
+        case 12:         // hide elements from song 1 performance practice
+            s1pp_back_button.hide();
+            c.hide();
+            c_sharp.hide();
+            d.hide();
+            d_sharp.hide();
+            e.hide();
+            f.hide();
+            f_sharp.hide();
+            g.hide();
+            g_sharp.hide();
+            a.hide();
+            a_sharp.hide();
+            b.hide();
+            break;
+        case 13:         // hide elements from start screen
+            get_started.hide();
+        default:         // hide elements from error message
+            break;
     }
+}
 
-    function spawnCircle(note) {
-        // Only spawn a circle if enough time has passed and there are no circles currently spawned for this note
-        if (millis() - lastSpawnTime > spawnInterval && noteCircles[note].length === 0) {
-            // Spawn a circle for the current note
-            let lineSpacing = height / (7 + 5); // Spacing between lines
-            let startY = (note.charCodeAt(0) - 'C'.charCodeAt(0)) * lineSpacing;
-            let xPos = -circleSize; // Initial X position for circle spawns
+/**
+ * shows the elements (buttons, etc.) on the screen, usually after changing scenes
+ * @param {!scenes} x screen whose elements you're attempting to show
+ */
+function showElements(x) {
+    switch (x) {
+        case 0:          // hide elements from title screen
+            title_back_button.show();
+            study_button.show();
+            play_button.show();
+            break;
 
-            // Create a new circle object and push it to the corresponding note array
-            let newCircle = { x: xPos, y: startY };
-            noteCircles[note].push(newCircle);
+        case 1:          // hide elements from study screen
+            study_back_button.show();
+            rhythm_guide_button.show();
+            scales_button.show();
+            notes_button.show();
+            break;
+        case 2:          // hide elements from rhythm guide
+            rg_back_button.show();
+            break;
+        case 3:          // hide elements from scales guide
+            sr_back_button.show();
+            break;
+        case 4:          // hide elements from note flashcards
+            nf_back_button.show();
+            break;
 
-            // Update the last spawn time
-            lastSpawnTime = millis();
-        }
-
-        // Update position of circles and remove them when they cross the middle line
-        for (let i = noteCircles[note].length - 1; i >= 0; i--) {
-            let circle = noteCircles[note][i];
-            circle.x += circleSpeed; // Move the circle horizontally
-
-            // Check if the circle has crossed the middle line
-            if (circle.x > -circleSize / 2) {
-                // Remove the circle from the array
-                noteCircles[note].splice(i, 1);
-            }
-        }
-    }
-
-    function keyPressed() {
-        if (key == 'd' || key == 'D') {
-            melodyLocked = false;
-            performLocked = false;
-        }
-
-        // Remove all circles when the 'g' key is pressed
-        if (key === 'g') {
-            circleXPositions = [];
-            console.log('g key pressed!');
-        }
-    }
-
-    /** event handler for clicking inside the flashcard */
-    function mouseClicked() {
-        // check if mouse is within the card bounds
-        if (
-            mouseX > width / 2 - cardWidth / 2 &&
-            mouseX < width / 2 + cardWidth / 2 &&
-            mouseY > height / 2 - cardHeight / 2 &&
-            mouseY < height / 2 + cardHeight / 2
-        ) {
-            // flip the card
-            isFlipped = !isFlipped;
-            flipAngle = 0;
-            flipAnimation();
-        }
-    }
-
-    function scoreCheck() {
-        // Check if 'rhythm hit!' occurred and circle is on top of the lines
-        if (rhythmHit) {
-            for (let i = 0; i < circleXPositions.length; i++) {
-                if (circleXPositions[i] <= -150 + scoringWindow && circleXPositions[i] >= -150 - scoringWindow) {
-                    console.log('rhythm hit!');
-                    rhythmHit = false; // Reset rhythm hit flag
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-    function windowResized() {
-        resizeCanvas(windowWidth, windowHeight);
-    }
-
-    /**
-     * switches scenes
-     * @param {!scenes} x change current screen to this screen number
-     */
-    function changeScene(x) {
-        screen = x;
-    }
-
-    /**
-     * hides the elements (buttons, etc.) from the screen, usually before switching scenes
-     * @param {!scenes} x screen whose elements you're attempting to hide
-     */
-    function hideElements(x) {
-        switch (x) {
-            case 0:          // hide elements from title screen
-                title_back_button.hide();
-                study_button.hide();
-                play_button.hide();
-                break;
-
-            case 1:          // hide elements from study screen
-                study_back_button.hide();
-                rhythm_guide_button.hide();
-                scales_button.hide();
-                notes_button.hide();
-                break;
-            case 2:          // hide elements from rhythm guide
-                rg_back_button.hide();
-                break;
-            case 3:          // hide elements from scales guide
-                sr_back_button.hide();
-                break;
-            case 4:          // hide elements from note flashcards
-                nf_back_button.hide();
-                break;
-
-            case 5:          // hide elements from play screen
-                play_back_button.hide();
-                song1_button.hide();
-                break;
-            case 6:          // hide elements from song 1 screen
-                s1_back_button.hide();
-                song1_rhythm.hide();
-                song1_rhythm_practice.hide();
-                song1_melody.hide();
-                song1_melody_practice.hide();
-                song1_perform.hide();
-                song1_perform_practice.hide();
-                break;
-            case 7:          // hide elements from song 1 rhythm
-                s1r_back_button.hide();
-                rhythm_hit.hide();
-                break;
-            case 8:          // hide elements from song 1 rhythm practice
-                s1rp_back_button.hide();
-                rhythm_hit.hide();
-                break;
-            case 9:          // hide elements from song 1 melody
-                s1m_back_button.hide();
-                c.hide();
-                c_sharp.hide();
-                d.hide();
-                d_sharp.hide();
-                e.hide();
-                f.hide();
-                f_sharp.hide();
-                g.hide();
-                g_sharp.hide();
-                a.hide();
-                a_sharp.hide();
-                b.hide();
-                break;
-            case 10:         // hide elements from song 1 melody practice
-                s1mp_back_button.hide();
-                c.hide();
-                c_sharp.hide();
-                d.hide();
-                d_sharp.hide();
-                e.hide();
-                f.hide();
-                f_sharp.hide();
-                g.hide();
-                g_sharp.hide();
-                a.hide();
-                a_sharp.hide();
-                b.hide();
-                break;
-            case 11:         // hide elements from song 1 performance
-                s1p_back_button.hide();
-                c.hide();
-                c_sharp.hide();
-                d.hide();
-                d_sharp.hide();
-                e.hide();
-                f.hide();
-                f_sharp.hide();
-                g.hide();
-                g_sharp.hide();
-                a.hide();
-                a_sharp.hide();
-                b.hide();
-                break;
-            case 12:         // hide elements from song 1 performance practice
-                s1pp_back_button.hide();
-                c.hide();
-                c_sharp.hide();
-                d.hide();
-                d_sharp.hide();
-                e.hide();
-                f.hide();
-                f_sharp.hide();
-                g.hide();
-                g_sharp.hide();
-                a.hide();
-                a_sharp.hide();
-                b.hide();
-                break;
-            case 13:         // hide elements from start screen
-                get_started.hide();
-            default:         // hide elements from error message
-                break;
-        }
-    }
-
-    /**
-     * shows the elements (buttons, etc.) on the screen, usually after changing scenes
-     * @param {!scenes} x screen whose elements you're attempting to show
-     */
-    function showElements(x) {
-        switch (x) {
-            case 0:          // hide elements from title screen
-                title_back_button.show();
-                study_button.show();
-                play_button.show();
-                break;
-
-            case 1:          // hide elements from study screen
-                study_back_button.show();
-                rhythm_guide_button.show();
-                scales_button.show();
-                notes_button.show();
-                break;
-            case 2:          // hide elements from rhythm guide
-                rg_back_button.show();
-                break;
-            case 3:          // hide elements from scales guide
-                sr_back_button.show();
-                break;
-            case 4:          // hide elements from note flashcards
-                nf_back_button.show();
-                break;
-
-            case 5:          // hide elements from play screen
-                play_back_button.show();
-                song1_button.show();
-                break;
-            case 6:          // hide elements from song 1 screen
-                s1_back_button.show();
-                song1_rhythm.show();
-                song1_rhythm_practice.show();
-                song1_melody.show();
-                song1_melody_practice.show();
-                song1_perform.show();
-                song1_perform_practice.show();
-                break;
-            case 7:          // hide elements from song 1 rhythm
-                s1r_back_button.show();
-                rhythm_hit.show();
-                break;
-            case 8:          // hide elements from song 1 rhythm practice
-                s1rp_back_button.show();
-                rhythm_hit.show();
-                break;
-            case 9:          // hide elements from song 1 melody
-                s1m_back_button.show();
-                c.show();
-                c_sharp.show();
-                d.show();
-                d_sharp.show();
-                e.show();
-                f.show();
-                f_sharp.show();
-                g.show();
-                g_sharp.show();
-                a.show();
-                a_sharp.show();
-                b.show();
-                break;
-            case 10:         // hide elements from song 1 melody practice
-                s1mp_back_button.show();
-                c.show();
-                c_sharp.show();
-                d.show();
-                d_sharp.show();
-                e.show();
-                f.show();
-                f_sharp.show();
-                g.show();
-                g_sharp.show();
-                a.show();
-                a_sharp.show();
-                b.show();
-                break;
-            case 11:         // hide elements from song 1 performance
-                s1p_back_button.show();
-                c.show();
-                c_sharp.show();
-                d.show();
-                d_sharp.show();
-                e.show();
-                f.show();
-                f_sharp.show();
-                g.show();
-                g_sharp.show();
-                a.show();
-                a_sharp.show();
-                b.show();
-                break;
-            case 12:         // hide elements from song 1 performance practice
-                s1pp_back_button.show();
-                c.show();
-                c_sharp.show();
-                d.show();
-                d_sharp.show();
-                e.show();
-                f.show();
-                f_sharp.show();
-                g.show();
-                g_sharp.show();
-                a.show();
-                a_sharp.show();
-                b.show();
-                break;
-            case 13:
-                get_started.show();
-            default:         // hide elements from error message
-                break;
-        }
+        case 5:          // hide elements from play screen
+            play_back_button.show();
+            song1_button.show();
+            break;
+        case 6:          // hide elements from song 1 screen
+            s1_back_button.show();
+            song1_rhythm.show();
+            song1_rhythm_practice.show();
+            song1_melody.show();
+            song1_melody_practice.show();
+            song1_perform.show();
+            song1_perform_practice.show();
+            break;
+        case 7:          // hide elements from song 1 rhythm
+            s1r_back_button.show();
+            rhythm_hit.show();
+            break;
+        case 8:          // hide elements from song 1 rhythm practice
+            s1rp_back_button.show();
+            rhythm_hit.show();
+            break;
+        case 9:          // hide elements from song 1 melody
+            s1m_back_button.show();
+            c.show();
+            c_sharp.show();
+            d.show();
+            d_sharp.show();
+            e.show();
+            f.show();
+            f_sharp.show();
+            g.show();
+            g_sharp.show();
+            a.show();
+            a_sharp.show();
+            b.show();
+            break;
+        case 10:         // hide elements from song 1 melody practice
+            s1mp_back_button.show();
+            c.show();
+            c_sharp.show();
+            d.show();
+            d_sharp.show();
+            e.show();
+            f.show();
+            f_sharp.show();
+            g.show();
+            g_sharp.show();
+            a.show();
+            a_sharp.show();
+            b.show();
+            break;
+        case 11:         // hide elements from song 1 performance
+            s1p_back_button.show();
+            c.show();
+            c_sharp.show();
+            d.show();
+            d_sharp.show();
+            e.show();
+            f.show();
+            f_sharp.show();
+            g.show();
+            g_sharp.show();
+            a.show();
+            a_sharp.show();
+            b.show();
+            break;
+        case 12:         // hide elements from song 1 performance practice
+            s1pp_back_button.show();
+            c.show();
+            c_sharp.show();
+            d.show();
+            d_sharp.show();
+            e.show();
+            f.show();
+            f_sharp.show();
+            g.show();
+            g_sharp.show();
+            a.show();
+            a_sharp.show();
+            b.show();
+            break;
+        case 13:
+            get_started.show();
+        default:         // hide elements from error message
+            break;
     }
 }
