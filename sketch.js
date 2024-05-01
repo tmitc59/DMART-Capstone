@@ -95,91 +95,94 @@ let scoringWindow = 100; // Scoring window in pixels
 
 let rhythmHit = false; // Flag to indicate if rhythm hit occurred
 
-let circleSpeed = -1; // Speed of circle movement
-
-// Object to store arrays of circles for each note
-let noteCircles = {
-  C: [],
-  D: [],
-  E: [],
-  F: [],
-  G: [],
-  A: [],
-  B: []
-};
-
-// Variable to keep track of the current note being spawned
-let currentNoteIndex = 0;
-
-// Global circle size variable
-let circleSize = 25; // Circle size
-
-let song; // Variable to store the song for rhythm and melody
-let song1; // Variable to store the song for performance
+let song; // Variable to store the song
 
 // music/sound variables //
 let noteSynth = new p5.MonoSynth();
 
 // note flashcards vars //
-let cardWidth = 200, cardHeight = 150, frontColor = 100, backColor = 130;
-let isFlipped = false, flipAngle = 0, flipSpeed = 10;
+// let cardWidth = 200, cardHeight = 150, frontColor = 160, backColor = 120;
+// let isFlipped = false, flipAngle = 0, flipSpeed = 10;
 var flashcards = Object.freeze([
     {
         // id: 0,
         front: 'C',
-        back: c_img
+        back: c_img,
+        x: -500,
+        y: -190
     },
     {
         // id: 1,
         front: 'C#',
-        back: 'C# on the staff'
+        back: 'C# on the staff',
+        x: -250,
+        y: -190
     },
     {
         // id: 2,
         front: 'D',
-        back: d_img
+        back: d_img,
+        x: 0,
+        y: -190
     },
     {
         // id: 3,
         front: 'D#',
-        back: 'D# on the staff'
+        back: 'D# on the staff',
+        x: 250,
+        y: -190
     },
     {
         // id: 4,
         front: 'E',
-        back: e_img
+        back: e_img,
+        x: 500,
+        y: -190
     },
     {
         // id: 5,
         front: 'F',
-        back: f_img
+        back: f_img,
+        x: -600,
+        y: 190
     },
     {
         // id: 6,
         front: 'F#',
-        back: 'F# on the staff'
+        back: 'F# on the staff',
+        x: -363,
+        y: 190
     },
     {
         // id: 7,
         front: 'G',
-        back: g_img
+        back: g_img,
+        x: -125,
+        y: 190
     },
     {
         // id: 8,
         front: 'A',
-        back: a_img
+        back: a_img,
+        x: 125,
+        y: 190
     },
     {
         // id: 9,
         front: 'A#',
-        back: 'A# on the staff'
+        back: 'A# on the staff',
+        x: 363,
+        y: 190
     },
     {
         // id: 10,
         front: 'B',
-        back: b_img
+        back: b_img,
+        x: 600,
+        y: 190
     }
 ]);
+let cards = [];
 
 function preload() {
     font = loadFont('assets/inconsolata.otf');        // cred: https://www.1001fonts.com/inconsolata-font.html
@@ -205,9 +208,6 @@ function preload() {
 
     // original music created by Taylor Stoddard
     song = loadSound('assets/song1_Scales_melodyOnly.mp3');
-
-    // original music created by Taylor Stoddard
-    song1 = loadSound('assets/song1 master1 .mp3');
 }
 
 function setup() {
@@ -216,6 +216,15 @@ function setup() {
     textFont(font);
     textSize(15);
     screen = 13;
+
+    for (let i = 0; i < 11; i++) {
+        cards[i] = new Card(
+            flashcards[i].x,
+            flashcards[i].y,
+            flashcards[i].front,
+            flashcards[i].back
+        );
+    }
 
     if (screen == scenes.start_screen) {        // get started screen
         get_started = createButton("GET STARTED");
@@ -453,7 +462,6 @@ function setup() {
 
     rhythm_hit = createButton("Press");
     rhythm_hit.position(240, 450);
-    song.play();
     rhythm_hit.mousePressed(() => {
         // Remove all circles when the rhythm button is pressed
         circleXPositions = [];
@@ -468,7 +476,6 @@ function setup() {
     //// SONG 1 RHYTHM PRACTICE SCENE BUTTONS ////
     s1rp_back_button = createButton("Back");
     s1rp_back_button.position(30, 25);
-    song.play();
     s1rp_back_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
@@ -482,7 +489,6 @@ function setup() {
     //// SONG 1 MELODY SCENE BUTTONS ////
     s1m_back_button = createButton("Back");
     s1m_back_button.position(30, 25);
-    song.play();
     s1m_back_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
@@ -580,7 +586,6 @@ function setup() {
     //// SONG 1 MELODY PRACTICE SCENE BUTTONS ////
     s1mp_back_button = createButton("Back");
     s1mp_back_button.position(30, 25);
-    song.play();
     s1mp_back_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
@@ -594,7 +599,6 @@ function setup() {
     //// SONG 1 PERFORMANCE SCENE BUTTONS ////
     s1p_back_button = createButton("Back");
     s1p_back_button.position(30, 25);
-    song1.play();
     s1p_back_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
@@ -608,7 +612,6 @@ function setup() {
     //// SONG 1 PERFORMANCE PRACTICE SCENE BUTTONS ////
     s1pp_back_button = createButton("Back");
     s1pp_back_button.position(30, 25);
-    song1.play();
     s1pp_back_button.mousePressed(() => {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
@@ -621,7 +624,7 @@ function setup() {
 
 function draw() {
     background('#760F13');
-    image(bg_img, -770, -460, windowWidth, windowHeight+24);
+    image(bg_img, -770, -460, windowWidth, windowHeight + 24);
 
     if (screen == scenes.title) {        // title screen
         fill('white');
@@ -651,24 +654,9 @@ function draw() {
     else if (screen == scenes.note_flashcards) {   // note flashcards screen
         fill('white');
         text("Note Reference", 0, -390);
-
-        // draw the card's shape
-        rotateY(radians(flipAngle));
-        fill(isFlipped ? backColor : frontColor);
-        rectMode(CENTER);
-        rect(0, 0, cardWidth, cardHeight);
-
-        // draw text
-        fill('black');
-        if (isFlipped) {
-            push();
-            rotateY(PI);
-            image(flashcards[0].back, -52, -45, 100, 100);
-            pop();
-        } else {
-            text(flashcards[0].front, 0, 0);
-        }
-        // TODO: implement more flashcards
+        cards.forEach(crd => {
+            crd.display();
+        });
     }
     else if (screen == scenes.play) {   // play screen
         fill('white');
@@ -744,7 +732,7 @@ function draw() {
         // Display score on screen
         textSize(24);
         fill(255);
-    
+        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
 
         // Generate lines for the background
         stroke(255); // Set line color to white
@@ -790,139 +778,67 @@ function draw() {
         }
     }
     else if (screen == scenes.s1melody) {   // song 1 melody screen
-        background(90); // Clear the background
-  
-  // Display text
-  fill('white');
-  textSize(24);
-  textAlign(CENTER, CENTER);
-  text("Song 1 Melody", 0, -200);
-  text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
-  
-  // Generate lines for the background
-  stroke(0); // Set line color to white
-  strokeWeight(4); // Set line thickness
-  let numLines = 7; // Number of horizontal lines
-  let lineSpacing = height / (numLines + 5); // Spacing between lines
-  for (let i = 1; i <= numLines; i++) {
-    let y = i * lineSpacing;
-    line(-215, y - 150, 200, y - 150); // Draw horizontal lines
-  }
-  line(-150, 175, -150, -175); // Draw vertical line
-  
-  // Spawn circles for each note
-  for (let note in noteCircles) {
-    if (noteCircles.hasOwnProperty(note)) {
-      spawnCircle(note);
-    }
-  }
-  
-  // Draw circles
-  for (let note in noteCircles) {
-    if (noteCircles.hasOwnProperty(note)) {
-      for (let circle of noteCircles[note]) {
-        // Draw circle
-        fill(255, 0, 0); // Red color
-        ellipse(circle.x, circle.y, circleSize, circleSize);
-      }
-    }
-  }
+        fill('white');
+        text("Song 1 Melody", 0, -390);
+        // Generate lines for the background
+        //TODO make lines smaller
+        stroke(255); // Set line color to white
+        strokeWeight(4); // Set line thickness
+        let numLines = 5; // Number of horizontal lines
+        let lineSpacing = height / (numLines + 5); // Spacing between lines
+        for (let i = 1; i <= numLines; i++) {
+            let y = i * lineSpacing;
+            line(-215, y - 150, 200, y - 150); // Draw horizontal lines
+        }
+        strokeWeight(4); // Set line thickness
+        line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
-        background(90); // Clear the background
-  
-  // Display text
-  fill('white');
-  textSize(24);
-  textAlign(CENTER, CENTER);
-  text("Song 1 Melody", 0, -200);
-  
-  // Generate lines for the background
-  stroke(0); // Set line color to white
-  strokeWeight(4); // Set line thickness
-  let numLines = 7; // Number of horizontal lines
-  let lineSpacing = height / (numLines + 5); // Spacing between lines
-  for (let i = 1; i <= numLines; i++) {
-    let y = i * lineSpacing;
-    line(-215, y - 150, 200, y - 150); // Draw horizontal lines
-  }
-  line(-150, 175, -150, -175); // Draw vertical line
-  
-  // Spawn circles for each note
-  for (let note in noteCircles) {
-    if (noteCircles.hasOwnProperty(note)) {
-      spawnCircle(note);
-    }
-  }
-  
-  // Draw circles
-  for (let note in noteCircles) {
-    if (noteCircles.hasOwnProperty(note)) {
-      for (let circle of noteCircles[note]) {
-        // Draw circle
-        fill(255, 0, 0); // Red color
-        ellipse(circle.x, circle.y, circleSize, circleSize);
-      }
-    }
-  }
+        fill('white');
+        text("Song 1 Melody Practice", 0, -390);
+        // Generate lines for the background
+        //TODO make lines smaller
+        stroke(255); // Set line color to white
+        strokeWeight(4); // Set line thickness
+        let numLines = 5; // Number of horizontal lines
+        let lineSpacing = height / (numLines + 5); // Spacing between lines
+        for (let i = 1; i <= numLines; i++) {
+            let y = i * lineSpacing;
+            line(-215, y - 150, 200, y - 150); // Draw horizontal lines
+        }
+        strokeWeight(4); // Set line thickness
+        line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.s1perform) {  // song 1 performance screen
-        background(90); // Clear the background
-  
-        // Display text
         fill('white');
-        textSize(24);
-        textAlign(CENTER, CENTER);
-        text("Song 1 Melody", 0, -200);
-        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
-        
+        text("Song 1 Performance", 0, -390);
         // Generate lines for the background
-        stroke(0); // Set line color to white
+        //TODO make lines smaller
+        stroke(255); // Set line color to white
         strokeWeight(4); // Set line thickness
-        let numLines = 7; // Number of horizontal lines
+        let numLines = 5; // Number of horizontal lines
         let lineSpacing = height / (numLines + 5); // Spacing between lines
         for (let i = 1; i <= numLines; i++) {
-          let y = i * lineSpacing;
-          line(-215, y - 150, 200, y - 150); // Draw horizontal lines
+            let y = i * lineSpacing;
+            line(-215, y - 150, 200, y - 150); // Draw horizontal lines
         }
+        strokeWeight(4); // Set line thickness
         line(-150, 175, -150, -175); // Draw vertical line
-        
-        // Spawn circles for each note
-        for (let note in noteCircles) {
-          if (noteCircles.hasOwnProperty(note)) {
-            spawnCircle(note);
-          }
-        }
-        
-        // Draw circles
-        for (let note in noteCircles) {
-          if (noteCircles.hasOwnProperty(note)) {
-            for (let circle of noteCircles[note]) {
-              // Draw circle
-              fill(255, 0, 0); // Red color
-              ellipse(circle.x, circle.y, circleSize, circleSize);
-            }
-          }
-        }
     }
     else if (screen == scenes.s1perform_practice) {  // song 1 performance practice screen
-        background(90); // Clear the background
-  
-        // Display text
         fill('white');
-        textSize(24);
-        textAlign(CENTER, CENTER);
-        text("Song 1 Melody", 0, -200);
-        
+        text("Song 1 Performance Practice", 0, -390);
         // Generate lines for the background
-        stroke(0); // Set line color to white
+        //TODO make lines smaller
+        stroke(255); // Set line color to white
         strokeWeight(4); // Set line thickness
-        let numLines = 7; // Number of horizontal lines
+        let numLines = 5; // Number of horizontal lines
         let lineSpacing = height / (numLines + 5); // Spacing between lines
         for (let i = 1; i <= numLines; i++) {
-          let y = i * lineSpacing;
-          line(-215, y - 150, 200, y - 150); // Draw horizontal lines
+            let y = i * lineSpacing;
+            line(-215, y - 150, 200, y - 150); // Draw horizontal lines
         }
+        strokeWeight(4); // Set line thickness
         line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.start_screen) {
@@ -934,15 +850,6 @@ function draw() {
         background('red');
         fill('black');
         text("error: draw() went outside the defined screens!", -235, -100);
-    }
-}
-
-/** flip animation for the note flashcards */
-function flipAnimation() {
-    let targetAngle = isFlipped ? 180 : 0;
-    if (flipAngle < targetAngle) {
-        flipAngle += flipSpeed;
-        requestAnimationFrame(flipAnimation);
     }
 }
 
@@ -966,17 +873,12 @@ function keyPressed() {
 
 /** event handler for clicking inside the flashcard */
 function mouseClicked() {
-    // check if mouse is within the card bounds
-    if (
-        mouseX > width / 2 - cardWidth / 2 &&
-        mouseX < width / 2 + cardWidth / 2 &&
-        mouseY > height / 2 - cardHeight / 2 &&
-        mouseY < height / 2 + cardHeight / 2
-    ) {
-        // flip the card
-        isFlipped = !isFlipped;
-        flipAngle = 0;
-        flipAnimation();
+    for (let i = 0; i < cards.length; i++) {
+        if (cards[i].isMouseOver()) {
+            // if mouse is over the card, flip it
+            // flashcards[i].flipIfClicked();
+            break;
+        }
     }
 }
 
@@ -993,36 +895,6 @@ function scoreCheck() {
     }
     return false;
 }
-
-function spawnCircle(note) {
-    // Only spawn a circle if enough time has passed and there are no circles currently spawned for this note
-    if (millis() - lastSpawnTime > spawnInterval && noteCircles[note].length === 0) {
-      // Spawn a circle for the current note
-      let lineSpacing = height / (7 + 5); // Spacing between lines
-      let startY = (note.charCodeAt(0) - 'C'.charCodeAt(0)) * lineSpacing;
-      let xPos = -circleSize; // Initial X position for circle spawns
-  
-      // Create a new circle object and push it to the corresponding note array
-      let newCircle = { x: xPos, y: startY };
-      noteCircles[note].push(newCircle);
-  
-      // Update the last spawn time
-      lastSpawnTime = millis();
-    }
-  
-    // Update position of circles and remove them when they cross the middle line
-    for (let i = noteCircles[note].length - 1; i >= 0; i--) {
-      let circle = noteCircles[note][i];
-      circle.x += circleSpeed; // Move the circle horizontally
-  
-      // Check if the circle has crossed the middle line
-      if (circle.x > -circleSize / 2) {
-        // Remove the circle from the array
-        noteCircles[note].splice(i, 1);
-      }
-    }
-  }
-
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
@@ -1265,5 +1137,98 @@ function showElements(x) {
             get_started.show();
         default:         // hide elements from error message
             break;
+    }
+}
+
+// DOESN'T WORK - card text is backward on the front side
+/**
+ * flashcard class
+ * @param {!number} cardX x position of the flashcard
+ * @param {!number} cardY y position of the flashcard
+ * @param {!string} frontTxt text on the front of the card
+ * @param {!string} backTxt text on the back of the card
+ */
+class Card {
+    constructor(cardX, cardY, frontTxt, backTxt) {
+        this.x = cardX;
+        this.y = cardY;
+        this.cardW = 200;
+        this.cardH = 150;
+        this.frontColor = 160;
+        this.backColor = 120;
+        this.textColor = 0;
+        this.frontText = frontTxt;
+        this.backText = backTxt;
+        this.isFlipped = false;
+        this.flipAngle = 0;
+        this.flipSpeed = 10;
+
+        // bind the flipAnimation method to the current instance of Card
+        this.flipAnimation = this.flipAnimation.bind(this);
+        this.flipIfClicked = this.flipIfClicked.bind(this);
+    }
+
+    /** draw the card and put text on it */
+    display() {
+        // draw card
+        rotateY(radians(this.flipAngle));
+        fill(this.isFlipped ? this.backColor : this.frontColor);
+        rectMode(CENTER);
+        rect(this.x, this.y, this.cardW, this.cardH);
+
+        // draw text
+        fill(this.textColor);
+        if (this.isFlipped) {
+            push();
+            rotateY(PI);
+            image(this.backText, this.x-50, this.y-50, 100, 100);
+            pop();
+        } else {
+            text(this.frontText, this.x, this.y);
+        }
+    }
+
+    /**
+     * animate the card so that it appears to visibly flip over in 3D
+     * space.
+     */
+    flipAnimation() {
+        const targetAngle = this.isFlipped ? 180 : 0;
+        if (this.flipAngle < targetAngle) {
+            this.flipAngle += this.flipSpeed;
+            requestAnimationFrame(this.flipAnimation);
+        }
+    }
+
+    /**
+      * check if mouse is within the bounds of the card when clicked.
+      * if it is, then flip the card.
+      */
+    flipIfClicked() {
+        this.isFlipped = !this.isFlipped;
+        this.flipAngle = 0;
+        this.flipAnimation();
+    }
+
+    /**
+     * check if the mouse is over the card
+     * @returns boolean: true if the mouse is over the card, false otherwise.
+     */
+    isMouseOver() {
+        // calculate the distance between the mouse position and the card's
+        // position
+        const distance = dist(mouseX - width / 2, mouseY - height / 2,
+                              this.x, this.y);
+
+        // if the distance is within half the width and height of the card,
+        // the mouse is over the card
+        let isOver = distance < this.cardW / 2 &&
+                        distance < this.cardH / 2;
+
+        if (isOver) {
+            this.flipAngle = 0;  // reset flipAngle on hover
+            this.flipIfClicked();
+        }
+        return isOver;
     }
 }
