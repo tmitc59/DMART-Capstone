@@ -12,6 +12,16 @@
  * - hover text box: https://editor.p5js.org/xinxin/sketches/WEFVlnvSg
  * - headings: header2 = createElement('h2', 'what is your name?');
  * - song ex: https://p5js.org/examples/hello-p5-song.html
+ * - FLASHCARD IMAGES: https://www.quia.com/jg/1622622list.html
+ * 
+ * headings: header2 = createElement('h2', 'what is your name?');
+ * 
+ * button styling
+ * - change text color: button.style('color', 'black');
+ * - change button color: button.style('background-color', 'yellow');
+ * - change text size: button.style('font-size', '44px');
+ * - change button size: button.style('width', '300px');
+ * - hover: button.mouseOver(function);
 */
 
 /** the states (aka screens or scenes) in the app */
@@ -40,7 +50,7 @@ let font;
 
 // image vars //
 let time_sig_img, scale_img, title_piano_img, piano_img, button_img,
-    bg_img;
+    bg_img, c_img, d_img, e_img, f_img, g_img, a_img, b_img;
 
 // start screen buttons //
 let get_started;
@@ -96,7 +106,7 @@ var flashcards = Object.freeze([
     {
         id: 0,
         front: 'C',
-        back: 'C on the staff'
+        back: c_img
     },
     {
         id: 1,
@@ -106,7 +116,7 @@ var flashcards = Object.freeze([
     {
         id: 2,
         front: 'D',
-        back: 'D on the staff'
+        back: d_img
     },
     {
         id: 3,
@@ -116,12 +126,12 @@ var flashcards = Object.freeze([
     {
         id: 4,
         front: 'E',
-        back: 'E on the staff'
+        back: e_img
     },
     {
         id: 5,
         front: 'F',
-        back: 'F on the staff'
+        back: f_img
     },
     {
         id: 6,
@@ -131,12 +141,12 @@ var flashcards = Object.freeze([
     {
         id: 7,
         front: 'G',
-        back: 'G on the staff'
+        back: g_img
     },
     {
         id: 8,
         front: 'A',
-        back: 'A on the staff'
+        back: a_img
     },
     {
         id: 9,
@@ -146,16 +156,26 @@ var flashcards = Object.freeze([
     {
         id: 10,
         front: 'B',
-        back: 'B on the staff'
+        back: b_img
     }
 ]);
 
 function preload() {
-    font = loadFont('assets/inconsolata.otf');
+    font = loadFont('assets/inconsolata.otf');        // cred: https://www.1001fonts.com/inconsolata-font.html
     time_sig_img = loadImage('assets/time-sig.jpg');  // cred: teacherspayteachers.com
     scale_img = loadImage('assets/c_scale.png');      // cred: https://pianosecrets.com/wp-content/uploads/2019/10/330xNxnotes.png.pagespeed.ic_.XQb0I4IFUy.png
 
-    // original art created by Yongqi and Skylar
+    // cred: https://www.quia.com/jg/1622622list.html
+    // note flashcard images //
+    c_img = loadImage('assets/middle-c.png');
+    d_img = loadImage('assets/d.png');
+    e_img = loadImage('assets/e.png');
+    f_img = loadImage('assets/f.png');
+    g_img = loadImage('assets/g.png');
+    a_img = loadImage('assets/a.png');
+    b_img = loadImage('assets/b.png');
+
+    // original art created by Yongqi Ding and Skylar Norton
     title_piano_img = loadImage('assets/meowsic_piano.png');
     piano_img = loadImage('assets/piano.png')
     button_img = loadImage('assets/button_bg.png');
@@ -601,10 +621,10 @@ function draw() {
         if (isFlipped) {
             push();
             rotateY(PI);
-            text(flashcards[1].front, 0, 0);
+            image(c_img, -52, -45, 100, 100);
             pop();
         } else {
-            text(flashcards[1].back, 0, 0);
+            text(flashcards[0].front, 0, 0);
         }
         // TODO: implement more flashcards
     }
