@@ -101,88 +101,65 @@ let song; // Variable to store the song
 let noteSynth = new p5.MonoSynth();
 
 // note flashcards vars //
-// let cardWidth = 200, cardHeight = 150, frontColor = 160, backColor = 120;
-// let isFlipped = false, flipAngle = 0, flipSpeed = 10;
+let cardWidth = 200, cardHeight = 150, frontColor = 100, backColor = 130;
+let isFlipped = false, flipAngle = 0, flipSpeed = 10;
 var flashcards = Object.freeze([
     {
         // id: 0,
         front: 'C',
-        back: c_img,
-        x: -500,
-        y: -190
+        back: c_img
     },
     {
         // id: 1,
         front: 'C#',
-        back: 'C# on the staff',
-        x: -250,
-        y: -190
+        back: 'C# on the staff'
     },
     {
         // id: 2,
         front: 'D',
-        back: d_img,
-        x: 0,
-        y: -190
+        back: d_img
     },
     {
         // id: 3,
         front: 'D#',
-        back: 'D# on the staff',
-        x: 250,
-        y: -190
+        back: 'D# on the staff'
     },
     {
         // id: 4,
         front: 'E',
-        back: e_img,
-        x: 500,
-        y: -190
+        back: e_img
     },
     {
         // id: 5,
         front: 'F',
-        back: f_img,
-        x: -600,
-        y: 190
+        back: f_img
     },
     {
         // id: 6,
         front: 'F#',
-        back: 'F# on the staff',
-        x: -363,
-        y: 190
+        back: 'F# on the staff'
     },
     {
         // id: 7,
         front: 'G',
-        back: g_img,
-        x: -125,
-        y: 190
+        back: g_img
     },
     {
         // id: 8,
         front: 'A',
-        back: a_img,
-        x: 125,
-        y: 190
+        back: a_img
     },
     {
         // id: 9,
         front: 'A#',
-        back: 'A# on the staff',
-        x: 363,
-        y: 190
+        back: 'A# on the staff'
     },
     {
         // id: 10,
         front: 'B',
-        back: b_img,
-        x: 600,
-        y: 190
+        back: b_img
     }
 ]);
-let cards = [];
 
 function preload() {
     font = loadFont('assets/inconsolata.otf');        // cred: https://www.1001fonts.com/inconsolata-font.html
@@ -216,15 +193,6 @@ function setup() {
     textFont(font);
     textSize(15);
     screen = 13;
-
-    for (let i = 0; i < 11; i++) {
-        cards[i] = new Card(
-            flashcards[i].x,
-            flashcards[i].y,
-            flashcards[i].front,
-            flashcards[i].back
-        );
-    }
 
     if (screen == scenes.start_screen) {        // get started screen
         get_started = createButton("GET STARTED");
@@ -624,7 +592,7 @@ function setup() {
 
 function draw() {
     background('#760F13');
-    image(bg_img, -770, -460, windowWidth, windowHeight + 24);
+    image(bg_img, -770, -460, windowWidth, windowHeight+24);
 
     if (screen == scenes.title) {        // title screen
         fill('white');
@@ -654,9 +622,24 @@ function draw() {
     else if (screen == scenes.note_flashcards) {   // note flashcards screen
         fill('white');
         text("Note Reference", 0, -390);
-        cards.forEach(crd => {
-            crd.display();
-        });
+
+        // draw the card's shape
+        rotateY(radians(flipAngle));
+        fill(isFlipped ? backColor : frontColor);
+        rectMode(CENTER);
+        rect(0, 0, cardWidth, cardHeight);
+
+        // draw text
+        fill('black');
+        if (isFlipped) {
+            push();
+            rotateY(PI);
+            image(flashcards[0].back, -52, -45, 100, 100);
+            pop();
+        } else {
+            text(flashcards[0].front, 0, 0);
+        }
+        // TODO: implement more flashcards
     }
     else if (screen == scenes.play) {   // play screen
         fill('white');
@@ -853,6 +836,15 @@ function draw() {
     }
 }
 
+/** flip animation for the note flashcards */
+function flipAnimation() {
+    let targetAngle = isFlipped ? 180 : 0;
+    if (flipAngle < targetAngle) {
+        flipAngle += flipSpeed;
+        requestAnimationFrame(flipAnimation);
+    }
+}
+
 function spawnCircle() {
     let xPos = 200; // Fixed x-position for all circles
     circleXPositions.push(xPos); // Store the x-position of the circle
@@ -873,12 +865,17 @@ function keyPressed() {
 
 /** event handler for clicking inside the flashcard */
 function mouseClicked() {
-    for (let i = 0; i < cards.length; i++) {
-        if (cards[i].isMouseOver()) {
-            // if mouse is over the card, flip it
-            // flashcards[i].flipIfClicked();
-            break;
-        }
+    // check if mouse is within the card bounds
+    if (
+        mouseX > width / 2 - cardWidth / 2 &&
+        mouseX < width / 2 + cardWidth / 2 &&
+        mouseY > height / 2 - cardHeight / 2 &&
+        mouseY < height / 2 + cardHeight / 2
+    ) {
+        // flip the card
+        isFlipped = !isFlipped;
+        flipAngle = 0;
+        flipAnimation();
     }
 }
 
@@ -895,6 +892,7 @@ function scoreCheck() {
     }
     return false;
 }
+
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
@@ -1137,98 +1135,5 @@ function showElements(x) {
             get_started.show();
         default:         // hide elements from error message
             break;
-    }
-}
-
-// DOESN'T WORK - card text is backward on the front side
-/**
- * flashcard class
- * @param {!number} cardX x position of the flashcard
- * @param {!number} cardY y position of the flashcard
- * @param {!string} frontTxt text on the front of the card
- * @param {!string} backTxt text on the back of the card
- */
-class Card {
-    constructor(cardX, cardY, frontTxt, backTxt) {
-        this.x = cardX;
-        this.y = cardY;
-        this.cardW = 200;
-        this.cardH = 150;
-        this.frontColor = 160;
-        this.backColor = 120;
-        this.textColor = 0;
-        this.frontText = frontTxt;
-        this.backText = backTxt;
-        this.isFlipped = false;
-        this.flipAngle = 0;
-        this.flipSpeed = 10;
-
-        // bind the flipAnimation method to the current instance of Card
-        this.flipAnimation = this.flipAnimation.bind(this);
-        this.flipIfClicked = this.flipIfClicked.bind(this);
-    }
-
-    /** draw the card and put text on it */
-    display() {
-        // draw card
-        rotateY(radians(this.flipAngle));
-        fill(this.isFlipped ? this.backColor : this.frontColor);
-        rectMode(CENTER);
-        rect(this.x, this.y, this.cardW, this.cardH);
-
-        // draw text
-        fill(this.textColor);
-        if (this.isFlipped) {
-            push();
-            rotateY(PI);
-            image(this.backText, this.x-50, this.y-50, 100, 100);
-            pop();
-        } else {
-            text(this.frontText, this.x, this.y);
-        }
-    }
-
-    /**
-     * animate the card so that it appears to visibly flip over in 3D
-     * space.
-     */
-    flipAnimation() {
-        const targetAngle = this.isFlipped ? 180 : 0;
-        if (this.flipAngle < targetAngle) {
-            this.flipAngle += this.flipSpeed;
-            requestAnimationFrame(this.flipAnimation);
-        }
-    }
-
-    /**
-      * check if mouse is within the bounds of the card when clicked.
-      * if it is, then flip the card.
-      */
-    flipIfClicked() {
-        this.isFlipped = !this.isFlipped;
-        this.flipAngle = 0;
-        this.flipAnimation();
-    }
-
-    /**
-     * check if the mouse is over the card
-     * @returns boolean: true if the mouse is over the card, false otherwise.
-     */
-    isMouseOver() {
-        // calculate the distance between the mouse position and the card's
-        // position
-        const distance = dist(mouseX - width / 2, mouseY - height / 2,
-                              this.x, this.y);
-
-        // if the distance is within half the width and height of the card,
-        // the mouse is over the card
-        let isOver = distance < this.cardW / 2 &&
-                        distance < this.cardH / 2;
-
-        if (isOver) {
-            this.flipAngle = 0;  // reset flipAngle on hover
-            this.flipIfClicked();
-        }
-        return isOver;
     }
 }
