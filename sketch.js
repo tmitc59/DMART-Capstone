@@ -204,7 +204,8 @@ function preload() {
     cat_img = loadImage('assets/cat.png')
 
     // original music created by Taylor Stoddard
-    song1 = loadSound('assets/song1_master1_.mp3');
+    song = loadSound('assets/song1_Scales_melodyOnly.mp3');
+    song1 = loadSound('assets/song1 master1 .mp3');
 }
 
 function setup() {
