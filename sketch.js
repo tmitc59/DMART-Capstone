@@ -96,6 +96,7 @@ let scoringWindow = 100; // Scoring window in pixels
 let rhythmHit = false; // Flag to indicate if rhythm hit occurred
 
 let song; // Variable to store the song
+let song1;
 
 // music/sound variables //
 let noteSynth = new p5.MonoSynth();
@@ -183,8 +184,17 @@ function preload() {
     bg_img = loadImage('assets/app_bg.jpeg');
     cat_img = loadImage('assets/cat.png')
 
-    // original music created by Taylor Stoddard
+    // original music and sound by Taylor Stoddard:
+    // loading music //
     song = loadSound('assets/song1_Scales_melodyOnly.mp3');
+    song1 = loadSound('assets/song1 master1 .mp3');
+    // loading metronome sound effects //
+    rhythm1_sound = loadSound('assets/1234.mp3');
+    rhythm2_sound = loadSound('assets/pepperoniPizza.mp3');
+    rhythm3_sound = loadSound('assets/pizzaPepperoni.mp3');
+    rhythm4_sound = loadSound('assets/runPony.mp3');
+    rhythm5_sound = loadSound('assets/motorcycle.mp3');
+    rhythm6_sound = loadSound('assets/ponyRun.mp3');
 }
 
 function setup() {
@@ -294,6 +304,49 @@ function setup() {
         showElements(screen);
     });
     rg_back_button.class('back-buttons');
+
+    rhythm1 = createButton("1");
+    rhythm1.position(960, 285);
+    rhythm1.mousePressed(() => {
+        rhythm1_sound.play();
+    });
+    rhythm1.class('back-buttons');
+
+    rhythm2 = createButton("2");
+    rhythm2.position(960, 353);
+    rhythm2.mousePressed(() => {
+        rhythm2_sound.play();
+    });
+    rhythm2.class('back-buttons');
+
+    rhythm3 = createButton("3");
+    rhythm3.position(960, 421);
+    rhythm3.mousePressed(() => {
+        rhythm3_sound.play();
+    });
+    rhythm3.class('back-buttons');
+
+    rhythm4 = createButton("4");
+    rhythm4.position(960, 489);
+    rhythm4.mousePressed(() => {
+        rhythm4_sound.play();
+    });
+    rhythm4.class('back-buttons');
+
+    rhythm5 = createButton("5");
+    rhythm5.position(960, 557);
+    rhythm5.mousePressed(() => {
+        rhythm5_sound.play();
+    });
+    rhythm5.class('back-buttons');
+    
+    rhythm6 = createButton("6");
+    rhythm6.position(960, 625);
+    rhythm6.mousePressed(() => {
+        rhythm6_sound.play();
+    });
+    rhythm6.class('back-buttons');
+    
     hideElements(2);
 
     ///////////////////////////////////////////////////////////////
@@ -926,6 +979,12 @@ function hideElements(x) {
             break;
         case 2:          // hide elements from rhythm guide
             rg_back_button.hide();
+            rhythm1.hide();
+            rhythm2.hide();
+            rhythm3.hide();
+            rhythm4.hide();
+            rhythm5.hide();
+            rhythm6.hide();
             break;
         case 3:          // hide elements from scales guide
             sr_back_button.hide();
@@ -1042,6 +1101,12 @@ function showElements(x) {
             break;
         case 2:          // hide elements from rhythm guide
             rg_back_button.show();
+            rhythm1.show();
+            rhythm2.show();
+            rhythm3.show();
+            rhythm4.show();
+            rhythm5.show();
+            rhythm6.show();
             break;
         case 3:          // hide elements from scales guide
             sr_back_button.show();
