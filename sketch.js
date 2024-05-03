@@ -101,14 +101,6 @@ let scoringWindow = 100; // Scoring window in pixels
 
 let rhythmHit = false; // Flag to indicate if rhythm hit occurred
 
-let notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B']; // Note names
-let staffY = 200; // Y position of the staff
-let notesGenerated = 0; // Counter for the number of notes generated
-let note; // Object to hold the current note
-let tries = 0; // Number of tries
-let instruction = "Press the correct note on the keyboard: C, D, E, F, G, A, B";
-let gameFinished = false; // Flag to indicate if the game is finished
-
 // music/sound variables //
 let song; // Variable to store the song
 let song1;
@@ -574,8 +566,6 @@ function setup() {
     });
     s1m_back_button.class('back-buttons');
 
-    generateNote(); // Generate the first note
-
     c = createButton('C');
     c.position(150, 450);
     c.mousePressed(() => {
@@ -879,16 +869,20 @@ function draw() {
         }
     }
     else if (screen == scenes.s1melody) {   // song 1 melody screen
-        background(220);
-  drawStaff();
-  drawNote();
-  displayScore();
-  displayInstruction();
-
-  // Check if the game is finished
-  if (gameFinished) {
-    displayFinalScore();
-  }
+        fill('white');
+        text("Song 1 Melody", 0, -390);
+        // Generate lines for the background
+        //TODO make lines smaller
+        stroke(255); // Set line color to white
+        strokeWeight(4); // Set line thickness
+        let numLines = 5; // Number of horizontal lines
+        let lineSpacing = height / (numLines + 5); // Spacing between lines
+        for (let i = 1; i <= numLines; i++) {
+            let y = i * lineSpacing;
+            line(-215, y - 150, 200, y - 150); // Draw horizontal lines
+        }
+        strokeWeight(4); // Set line thickness
+        line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
         fill('white');
@@ -1007,82 +1001,6 @@ function scoreCheck() {
     }
     return false;
 }
-
-function generateNote() {
-    // Check if the maximum number of notes is reached
-    if (notesGenerated >= 10) {
-      gameFinished = true;
-      return;
-    }
-  
-    // Generate a random note name and position
-    let randomNote = random(notes);
-    let randomX = random(100, width - 100);
-    note = {name: randomNote, x: randomX};
-  
-    // Increment the counter
-    notesGenerated++;
-  }
-  
-  function drawStaff() {
-    // Draw horizontal lines for the staff
-    for (let i = 0; i < 5; i++) {
-      let y = staffY + i * 20;
-      line(- 200, y - 200, 200, y - 200);
-    }
-  }
-  
-  function drawNote() {
-    // Draw the note symbol
-    let y = staffY + 20 * notes.indexOf(note.name);
-    ellipse(note.x - width / 2, y - height / 2, 20); // Adjusting for the coordinate system
-  }
-  
-  
-  function displayScore() {
-    textSize(24);
-    textAlign(LEFT, TOP);
-    text("Score: " + score, -200, - 200);
-  }
-  
-  function displayInstruction() {
-    textSize(20);
-    textAlign(CENTER);
-    fill(90);
-    text(instruction, 0, 200);
-  }
-  
-  function keyPressed() {
-    // Check if the game is finished
-    if (gameFinished) {
-      return;
-    }
-  
-    // Check if the pressed key matches the current note
-    if (key.toUpperCase() === note.name) {
-      score++;
-      generateNote(); // Generate a new note
-      instruction = "Correct! Press the next note.";
-    } else {
-      // Incorrect guess
-      //score--; // Decrease score for wrong guess
-      instruction = "Incorrect! Try again.";
-    }
-    
-    tries++; // Increment the number of tries
-    
-    // After 10 tries, finish the game
-    if (tries === 10) {
-      gameFinished = true;
-    }
-  }
-  
-  function displayFinalScore() {
-    textSize(40);
-    textAlign(CENTER, CENTER)
-    fill(90)
-    text("Final Score: " + score, 0, 0);
-  }
 
 
 function windowResized() {
