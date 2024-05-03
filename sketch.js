@@ -80,6 +80,12 @@ let c, c_sharp, d, d_sharp, e, f, f_sharp, g, g_sharp, a, a_sharp, b;
 // rhythm button //
 let rhythm_hit = false;
 
+// rhythm guide sounds //
+let rhythm1_sound, rhythm2_sound, rhythm3_sound, rhythm4_sound, rhythm5_sound,
+    rhythm6_sound;
+// rhythm guide buttons //
+let rhythm1, rhythm2, rhythm3, rhythm4, rhythm5, rhythm6;
+
 // Rhythm guide variables
 let lastSpawnTime = 0;
 let spawnInterval = 4000; // Interval between circle spawns in milliseconds
@@ -95,11 +101,12 @@ let scoringWindow = 100; // Scoring window in pixels
 
 let rhythmHit = false; // Flag to indicate if rhythm hit occurred
 
+// music/sound variables //
 let song; // Variable to store the song
 let song1;
-
-// music/sound variables //
 let noteSynth = new p5.MonoSynth();
+let cardFlip, menuBegin, menuNext, menuPrev, cMajor, bgMusic, gameFail, gameWin,
+    noteMiss;
 
 // note flashcards vars //
 let cardWidth = 200, cardHeight = 150, frontColor = 100, backColor = 130;
@@ -177,9 +184,9 @@ function preload() {
     flashcards[8].back = loadImage('assets/a.png');
     flashcards[10].back = loadImage('assets/b.png');
 
-    // original art created by Yongqi Ding and Skylar Norton
+    // original art created by Yongqi Ding and Skylar Norton:
     title_piano_img = loadImage('assets/meowsic_piano.png');
-    piano_img = loadImage('assets/piano.png')
+    piano_img = loadImage('assets/piano.png');
     button_img = loadImage('assets/button_bg.png');
     bg_img = loadImage('assets/app_bg.jpeg');
     cat_img = loadImage('assets/cat.png');
@@ -188,6 +195,7 @@ function preload() {
     // loading music //
     song = loadSound('assets/song1_Scales_melodyOnly.mp3');
     song1 = loadSound('assets/song1 master1 .mp3');
+    bgMusic = loadSound('assets/title track master 1.mp3');
     // loading metronome sound effects //
     rhythm1_sound = loadSound('assets/1234.mp3');
     rhythm2_sound = loadSound('assets/pepperoniPizza.mp3');
@@ -195,6 +203,15 @@ function preload() {
     rhythm4_sound = loadSound('assets/runPony.mp3');
     rhythm5_sound = loadSound('assets/motorcycle.mp3');
     rhythm6_sound = loadSound('assets/ponyRun.mp3');
+    // other sound effects //
+    cardFlip = loadSound('assets/cardFlip1.mp3');
+    cMajor = loadSound('assets/cMajor.mp3');
+    menuBegin = loadSound('assets/menuBegin1Max.mp3');
+    menuNext = loadSound('assets/menuNext1Max.mp3');
+    menuPrev = loadSound('assets/menuPrev1Max.mp3');
+    gameFail = loadSound('assets/gameFailMax.mp3');
+    gameFail = loadSound('assets/gameWinMax.mp3');
+    noteMiss = loadSound('assets/noteMiss1Max.mp3');
 }
 
 function setup() {
@@ -212,6 +229,8 @@ function setup() {
             hideElements(screen);
             changeScene(scenes.title);
             showElements(screen);
+            menuBegin.play();
+            bgMusic.play();
         });
         get_started.style('background-color:black');
         get_started.style('color:white');
@@ -231,6 +250,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.start_screen);
         showElements(screen);
+        menuPrev.play();
     });
     title_back_button.class('back-buttons');
 
@@ -240,6 +260,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.study);
         showElements(screen);
+        menuNext.play();
     });
     study_button.class('title-buttons');
 
@@ -249,6 +270,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.play);
         showElements(screen);
+        menuNext.play();
     });
     play_button.class('title-buttons');
 
@@ -262,6 +284,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.title);     // back to title screen
         showElements(screen);
+        menuPrev.play();
     });
     study_back_button.class('back-buttons');
 
@@ -271,6 +294,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.rhythm_guide);
         showElements(screen);
+        menuNext.play();
     });
     rhythm_guide_button.class('buttons');
 
@@ -280,6 +304,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.scales_ref);
         showElements(screen);
+        cMajor.play();
     });
     scales_button.class('buttons');
 
@@ -289,6 +314,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.note_flashcards);
         showElements(screen);
+        menuNext.play();
     });
     notes_button.class('buttons');
 
@@ -302,6 +328,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.study);     // back to study screen
         showElements(screen);
+        menuPrev.play();
     });
     rg_back_button.class('back-buttons');
 
@@ -346,7 +373,7 @@ function setup() {
         rhythm6_sound.play();
     });
     rhythm6.class('back-buttons');
-    
+
     hideElements(2);
 
     ///////////////////////////////////////////////////////////////
@@ -357,6 +384,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.study);     // back to study screen
         showElements(screen);
+        menuPrev.play();
     });
     sr_back_button.class('back-buttons');
     hideElements(3);
@@ -369,6 +397,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.study);     // back to study screen
         showElements(screen);
+        menuPrev.play();
     });
     nf_back_button.class('back-buttons');
     hideElements(4);
@@ -381,6 +410,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.title);     // back to title screen
         showElements(screen);
+        menuPrev.play();
     });
     play_back_button.class('back-buttons');
 
@@ -391,6 +421,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.song1);
         showElements(screen);
+        menuNext.play();
     });
     song1_button.class('title-buttons');
     hideElements(5);
@@ -403,6 +434,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.play);     // back to play screen
         showElements(screen);
+        menuPrev.play();
     });
     s1_back_button.class('back-buttons');
 
@@ -412,6 +444,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.s1rhythm);
         showElements(screen);
+        menuNext.play();
     });
     song1_rhythm.class('buttons');
     song1_rhythm_practice = createButton("Rhythm Practice");
@@ -420,6 +453,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.s1rhythm_practice);
         showElements(screen);
+        menuNext.play();
     });
     song1_rhythm_practice.class('buttons');
 
@@ -434,6 +468,7 @@ function setup() {
             hideElements(screen);
             changeScene(scenes.s1melody);
             showElements(screen);
+            menuNext.play();
         }
     });
     song1_melody.class('buttons');
@@ -443,6 +478,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.s1melody_practice);
         showElements(screen);
+        menuNext.play();
     });
     song1_melody_practice.class('buttons');
 
@@ -456,6 +492,7 @@ function setup() {
             hideElements(screen);
             changeScene(scenes.s1perform);
             showElements(screen);
+            menuNext.play();
         }
     });
     song1_perform.class('buttons');
@@ -465,6 +502,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.s1perform_practice);
         showElements(screen);
+        menuNext.play();
     });
     song1_perform_practice.class('buttons');
 
@@ -478,6 +516,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
+        menuPrev.play();
     });
     s1r_back_button.class('back-buttons');
 
@@ -487,7 +526,6 @@ function setup() {
         // Remove all circles when the rhythm button is pressed
         circleXPositions = [];
         rhythmHit = true; // Set rhythm hit flag
-        console.log('rhythm hit!');
     });
     rhythm_hit.class('back-buttons');
 
@@ -501,6 +539,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
+        menuPrev.play();
     });
     s1rp_back_button.class('back-buttons');
 
@@ -514,6 +553,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
+        menuPrev.play();
     });
     s1m_back_button.class('back-buttons');
 
@@ -611,6 +651,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
+        menuPrev.play();
     });
     s1mp_back_button.class('back-buttons');
 
@@ -624,6 +665,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
+        menuPrev.play();
     });
     s1p_back_button.class('back-buttons');
 
@@ -637,6 +679,7 @@ function setup() {
         hideElements(screen);
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
+        menuPrev.play();
     });
     s1pp_back_button.class('back-buttons');
 
@@ -895,6 +938,7 @@ function flipAnimation() {
     if (flipAngle < targetAngle) {
         flipAngle += flipSpeed;
         requestAnimationFrame(flipAnimation);
+        cardFlip.play();
     }
 }
 
