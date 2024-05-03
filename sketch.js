@@ -700,9 +700,9 @@ function setup() {
 }
 
 function draw() {
-    image(bg_img, -770, -460, windowWidth, windowHeight+24);
 
     if (screen == scenes.title) {        // title screen
+        image(bg_img, -770, -460, windowWidth, windowHeight+24);
         fill('white');
         text("MEOWsic", 0, -390);
         image(button_img, -685, 70, 255, 124);
@@ -710,6 +710,7 @@ function draw() {
         image(piano_img, -650, -463, 1369, 1024);
     }
     else if (screen == scenes.study) {   // study screen
+        image(bg_img, -770, -460, windowWidth, windowHeight+24);
         fill('white');
         text("Study", 0, -390);
         image(button_img, -685, 70, 255, 124);
@@ -718,16 +719,19 @@ function draw() {
         image(cat_img, 105, -100, 400, 450);
     }
     else if (screen == scenes.rhythm_guide) {   // rhythm guide screen
+        image(bg_img, -770, -460, windowWidth, windowHeight+24);
         fill('white');
         text("Rhythm Guide", 0, -390);
         image(time_sig_img, -235, -298);
     }
     else if (screen == scenes.scales_ref) {   // scales reference screen
+        image(bg_img, -770, -460, windowWidth, windowHeight+24);
         fill('white');
         text("Scales Reference", 0, -390);
         image(scale_img, -235, -100);
     }
     else if (screen == scenes.note_flashcards) {   // note flashcards screen
+        image(bg_img, -770, -460, windowWidth, windowHeight+24);
         fill('white');
         text("Note Reference", 0, -390);
 
@@ -750,12 +754,14 @@ function draw() {
         // TODO: implement more flashcards
     }
     else if (screen == scenes.play) {   // play screen
+        image(bg_img, -770, -460, windowWidth, windowHeight+24);
         fill('white');
         text("Play", 0, -390);
         image(button_img, -685, -80, 255, 124);
         image(cat_img, 105, -100, 400, 450);
     }
     else if (screen == scenes.song1) {   // song 1 screen
+        image(bg_img, -770, -460, windowWidth, windowHeight+24);
         fill('white');
         text("Song 1", 0, -390);
         image(button_img, -685, 70, 255, 124);
@@ -943,6 +949,7 @@ function draw() {
         line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.start_screen) {
+        image(bg_img, -770, -460, windowWidth, windowHeight+24);
         fill('white');
         text('Music Education Online Workshop', -445, 0);
         image(title_piano_img, -650, -463, 1369, 1024);
