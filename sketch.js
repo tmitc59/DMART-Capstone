@@ -182,7 +182,7 @@ function preload() {
     piano_img = loadImage('assets/piano.png')
     button_img = loadImage('assets/button_bg.png');
     bg_img = loadImage('assets/app_bg.jpeg');
-    cat_img = loadImage('assets/cat.png')
+    cat_img = loadImage('assets/cat.png');
 
     // original music and sound by Taylor Stoddard:
     // loading music //
@@ -717,7 +717,7 @@ function draw() {
         // Display score on screen
         textSize(24);
         fill(255);
-        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 40);
+        text("Score: " + score, -windowWidth / 2 + 20, windowHeight / 2 - 60);
 
         // Generate lines for the background
         stroke(255); // Set line color to white
