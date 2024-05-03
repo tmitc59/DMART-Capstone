@@ -773,7 +773,7 @@ function draw() {
         image(cat_img, 105, -100, 400, 450);
     }
     else if (screen == scenes.s1rhythm) {   // song 1 rhythm screen
-        background("#f760F13");
+        background("#760F13");
         text("Song 1 Rhythm", 0, -190);
         image(rhythm_img, -650, -463, 1300, 904);
         // Display score on screen
