@@ -50,7 +50,7 @@ let font;
 
 // image vars //
 let time_sig_img, scale_img, title_piano_img, piano_img, button_img,
-    bg_img, c_img, d_img, e_img, f_img, g_img, a_img, b_img, cat_img;
+    bg_img, c_img, d_img, e_img, f_img, g_img, a_img, b_img, cat_img, rhythm_img;
 
 // start screen buttons //
 let get_started;
@@ -190,6 +190,7 @@ function preload() {
     button_img = loadImage('assets/button_bg.png');
     bg_img = loadImage('assets/app_bg.jpeg');
     cat_img = loadImage('assets/cat.png');
+    rhythm_img = loadImage('assets/rhythm_bg.jpeg');
 
     // original music and sound by Taylor Stoddard:
     // loading music //
@@ -699,7 +700,6 @@ function setup() {
 }
 
 function draw() {
-    background('#760F13');
     image(bg_img, -770, -460, windowWidth, windowHeight+24);
 
     if (screen == scenes.title) {        // title screen
@@ -767,8 +767,9 @@ function draw() {
         image(cat_img, 105, -100, 400, 450);
     }
     else if (screen == scenes.s1rhythm) {   // song 1 rhythm screen
-        background(90);
+        background("#f760F13");
         text("Song 1 Rhythm", 0, -190);
+        image(rhythm_img, -650, -463, 1300, 904);
         // Display score on screen
         textSize(24);
         fill(255);
@@ -818,8 +819,9 @@ function draw() {
         }
     }
     else if (screen == scenes.s1rhythm_practice) {   // song 1 rhythm practice screen
-        background(90);
-        text("Song 1 Rhythm", 0, -190);
+        background("#760F13");
+        text("Song 1 Rhythm Practice", 0, -190);
+        image(rhythm_img, -650, -463, 1300, 904);
         // Display score on screen
         textSize(24);
         fill(255);
@@ -869,8 +871,10 @@ function draw() {
         }
     }
     else if (screen == scenes.s1melody) {   // song 1 melody screen
+        background("#760F13");
         fill('white');
         text("Song 1 Melody", 0, -390);
+        image(rhythm_img, -650, -463, 1300, 904);
         // Generate lines for the background
         //TODO make lines smaller
         stroke(255); // Set line color to white
@@ -885,8 +889,10 @@ function draw() {
         line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
+        background("#760F13");
         fill('white');
         text("Song 1 Melody Practice", 0, -390);
+        image(rhythm_img, -650, -463, 1300, 904);
         // Generate lines for the background
         //TODO make lines smaller
         stroke(255); // Set line color to white
@@ -901,8 +907,10 @@ function draw() {
         line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.s1perform) {  // song 1 performance screen
+        background("#760F13");
         fill('white');
         text("Song 1 Performance", 0, -390);
+        image(rhythm_img, -650, -463, 1300, 904);
         // Generate lines for the background
         //TODO make lines smaller
         stroke(255); // Set line color to white
@@ -917,8 +925,10 @@ function draw() {
         line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.s1perform_practice) {  // song 1 performance practice screen
+        background("#760F13");
         fill('white');
         text("Song 1 Performance Practice", 0, -390);
+        image(rhythm_img, -650, -463, 1300, 904);
         // Generate lines for the background
         //TODO make lines smaller
         stroke(255); // Set line color to white
