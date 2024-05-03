@@ -1003,28 +1003,28 @@ function generateNote() {
     // Draw horizontal lines for the staff
     for (let i = 0; i < 5; i++) {
       let y = staffY + i * 20;
-      line(- 200, y - 200, 200, y - 200);
+      line(- 200, y - 150, 200, y - 150);
     }
   }
 
   function drawNote() {
     // Draw the note symbol
     let y = staffY + 20 * notes.indexOf(note.name);
-    ellipse(note.x - width / 2, y - height / 2, 20); // Adjusting for the coordinate system
+    ellipse(note.x - width, y - height / 2, 20); // Adjusting for the coordinate system
   }
 
 
   function displayScore() {
     textSize(24);
     textAlign(LEFT, TOP);
-    text("Score: " + score, -200, - 200);
+    text("Score: " + score, -250, - 250);
   }
 
   function displayInstruction() {
     textSize(20);
     textAlign(CENTER);
     fill(90);
-    text(instruction, 0, 200);
+    text(instruction, 0, 100);
   }
 
 function keyPressed() {
