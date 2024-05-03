@@ -260,6 +260,7 @@ function setup() {
         changeScene(scenes.start_screen);
         showElements(screen);
         menuPrev.play();
+        bgMusic.pause();
     });
     title_back_button.class('back-buttons');
 
@@ -444,6 +445,8 @@ function setup() {
         changeScene(scenes.play);     // back to play screen
         showElements(screen);
         menuPrev.play();
+        song1.stop();
+        song.stop();
     });
     s1_back_button.class('back-buttons');
 
@@ -455,6 +458,7 @@ function setup() {
         showElements(screen);
         menuNext.play();
         bgMusic.pause();
+        song1.play();
     });
     song1_rhythm.class('buttons');
     song1_rhythm_practice = createButton("Rhythm Practice");
@@ -465,6 +469,7 @@ function setup() {
         showElements(screen);
         menuNext.play();
         bgMusic.pause();
+        song1.play();
     });
     song1_rhythm_practice.class('buttons');
 
@@ -481,6 +486,7 @@ function setup() {
             showElements(screen);
             menuNext.play();
             bgMusic.pause();
+            song.play();
         }
     });
     song1_melody.class('buttons');
@@ -492,6 +498,7 @@ function setup() {
         showElements(screen);
         menuNext.play();
         bgMusic.pause();
+        song.play();
     });
     song1_melody_practice.class('buttons');
 
@@ -507,6 +514,7 @@ function setup() {
             showElements(screen);
             menuNext.play();
             bgMusic.pause();
+            song1.play();
         }
     });
     song1_perform.class('buttons');
@@ -518,6 +526,7 @@ function setup() {
         showElements(screen);
         menuNext.play();
         bgMusic.pause();
+        song1.play();
     });
     song1_perform_practice.class('buttons');
 
