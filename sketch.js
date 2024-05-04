@@ -108,7 +108,7 @@ let noteSynth = new p5.MonoSynth();
 let cardFlip, menuBegin, menuNext, menuPrev, cMajor, bgMusic, gameFail, gameWin,
     noteMiss;
 
-    let notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B']; // Note names
+let notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B']; // Note names
 let staffY = 200; // Y position of the staff
 let notesGenerated = 0; // Counter for the number of notes generated
 let note; // Object to hold the current note
@@ -376,7 +376,7 @@ function setup() {
         rhythm5_sound.play();
     });
     rhythm5.class('back-buttons');
-    
+
     rhythm6 = createButton("6");
     rhythm6.position(960, 625);
     rhythm6.mousePressed(() => {
@@ -424,7 +424,6 @@ function setup() {
     });
     play_back_button.class('back-buttons');
 
-    // change to match placard
     song1_button = createButton("Song 1");
     song1_button.position(154, 398);
     song1_button.mousePressed(() => {
@@ -445,8 +444,6 @@ function setup() {
         changeScene(scenes.play);     // back to play screen
         showElements(screen);
         menuPrev.play();
-        song1.stop();
-        song.stop();
     });
     s1_back_button.class('back-buttons');
 
@@ -542,6 +539,7 @@ function setup() {
         showElements(screen);
         menuPrev.play();
         bgMusic.play();
+        song1.stop();
     });
     s1r_back_button.class('back-buttons');
 
@@ -565,6 +563,7 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
         menuPrev.play();
+        song1.stop();
         bgMusic.play();
     });
     s1rp_back_button.class('back-buttons');
@@ -580,6 +579,7 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
         menuPrev.play();
+        song.stop();
         bgMusic.play();
     });
     s1m_back_button.class('back-buttons');
@@ -681,6 +681,7 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
         menuPrev.play();
+        song.stop();
         bgMusic.play();
     });
     s1mp_back_button.class('back-buttons');
@@ -696,6 +697,7 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
         menuPrev.play();
+        song1.stop();
         bgMusic.play();
     });
     s1p_back_button.class('back-buttons');
@@ -711,6 +713,7 @@ function setup() {
         changeScene(scenes.song1);     // back to song 1 screen
         showElements(screen);
         menuPrev.play();
+        song1.stop();
         bgMusic.play();
     });
     s1pp_back_button.class('back-buttons');
@@ -721,7 +724,7 @@ function setup() {
 function draw() {
 
     if (screen == scenes.title) {        // title screen
-        image(bg_img, -770, -460, windowWidth, windowHeight+24);
+        image(bg_img, -770, -460, windowWidth, windowHeight + 24);
         fill('white');
         text("MEOWsic", 0, -390);
         image(button_img, -685, 70, 255, 124);
@@ -729,7 +732,7 @@ function draw() {
         image(piano_img, -650, -463, 1369, 1024);
     }
     else if (screen == scenes.study) {   // study screen
-        image(bg_img, -770, -460, windowWidth, windowHeight+24);
+        image(bg_img, -770, -460, windowWidth, windowHeight + 24);
         fill('white');
         text("Study", 0, -390);
         image(button_img, -685, 70, 255, 124);
@@ -738,19 +741,19 @@ function draw() {
         image(cat_img, 105, -100, 400, 450);
     }
     else if (screen == scenes.rhythm_guide) {   // rhythm guide screen
-        image(bg_img, -770, -460, windowWidth, windowHeight+24);
+        image(bg_img, -770, -460, windowWidth, windowHeight + 24);
         fill('white');
         text("Rhythm Guide", 0, -390);
         image(time_sig_img, -235, -298);
     }
     else if (screen == scenes.scales_ref) {   // scales reference screen
-        image(bg_img, -770, -460, windowWidth, windowHeight+24);
+        image(bg_img, -770, -460, windowWidth, windowHeight + 24);
         fill('white');
         text("Scales Reference", 0, -390);
         image(scale_img, -235, -100);
     }
     else if (screen == scenes.note_flashcards) {   // note flashcards screen
-        image(bg_img, -770, -460, windowWidth, windowHeight+24);
+        image(bg_img, -770, -460, windowWidth, windowHeight + 24);
         fill('white');
         text("Note Reference", 0, -390);
 
@@ -773,14 +776,14 @@ function draw() {
         // TODO: implement more flashcards
     }
     else if (screen == scenes.play) {   // play screen
-        image(bg_img, -770, -460, windowWidth, windowHeight+24);
+        image(bg_img, -770, -460, windowWidth, windowHeight + 24);
         fill('white');
         text("Play", 0, -390);
         image(button_img, -685, -80, 255, 124);
         image(cat_img, 105, -100, 400, 450);
     }
     else if (screen == scenes.song1) {   // song 1 screen
-        image(bg_img, -770, -460, windowWidth, windowHeight+24);
+        image(bg_img, -770, -460, windowWidth, windowHeight + 24);
         fill('white');
         text("Song 1", 0, -390);
         image(button_img, -685, 70, 255, 124);
@@ -900,33 +903,30 @@ function draw() {
         fill('white');
         text("Song 1 Melody", 0, -390);
         image(rhythm_img, -650, -463, 1300, 904);
-  drawStaff();
-  drawNote();
-  displayScore();
-  displayInstruction();
+        drawStaff();
+        drawNote();
+        displayScore();
+        displayInstruction();
 
-  // Check if the game is finished
-  if (gameFinished) {
-    displayFinalScore();
-  }
+        // Check if the game is finished
+        if (gameFinished) {
+            displayFinalScore();
+        }
     }
     else if (screen == scenes.s1melody_practice) {  // song 1 melody practice screen
         background("#760F13");
         fill('white');
-        text("Song 1 Melody Practice", 0, -390);
+        text("Song 1 Melody", 0, -390);
         image(rhythm_img, -650, -463, 1300, 904);
-        // Generate lines for the background
-        //TODO make lines smaller
-        stroke(255); // Set line color to white
-        strokeWeight(4); // Set line thickness
-        let numLines = 5; // Number of horizontal lines
-        let lineSpacing = height / (numLines + 5); // Spacing between lines
-        for (let i = 1; i <= numLines; i++) {
-            let y = i * lineSpacing;
-            line(-215, y - 150, 200, y - 150); // Draw horizontal lines
+        drawStaff();
+        drawNote();
+        displayScore();
+        displayInstruction();
+
+        // Check if the game is finished
+        if (gameFinished) {
+            displayFinalScore();
         }
-        strokeWeight(4); // Set line thickness
-        line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.s1perform) {  // song 1 performance screen
         background("#760F13");
@@ -965,7 +965,7 @@ function draw() {
         line(-150, 175, -150, -175); // Draw vertical line
     }
     else if (screen == scenes.start_screen) {
-        image(bg_img, -770, -460, windowWidth, windowHeight+24);
+        image(bg_img, -770, -460, windowWidth, windowHeight + 24);
         fill('white');
         text('Music Education Online Workshop', -445, 0);
         image(title_piano_img, -650, -463, 1369, 1024);
@@ -995,46 +995,46 @@ function spawnCircle() {
 function generateNote() {
     // Check if the maximum number of notes is reached
     if (notesGenerated >= 10) {
-      gameFinished = true;
-      return;
+        gameFinished = true;
+        return;
     }
 
     // Generate a random note name and position
     let randomNote = random(notes);
     let randomX = random(100, width - 100);
-    note = {name: randomNote, x: randomX};
+    note = { name: randomNote, x: randomX };
 
     // Increment the counter
     notesGenerated++;
-  }
+}
 
-  function drawStaff() {
+function drawStaff() {
     // Draw horizontal lines for the staff
     for (let i = 0; i < 5; i++) {
-      let y = staffY + i * 20;
-      line(- 200, y - 200, 200, y - 200);
+        let y = staffY + i * 20;
+        line(- 200, y - 200, 200, y - 200);
     }
-  }
+}
 
-  function drawNote() {
+function drawNote() {
     // Draw the note symbol
     let y = staffY + 20 * notes.indexOf(note.name);
     ellipse(note.x - width / 2, y - height / 2, 20); // Adjusting for the coordinate system
-  }
+}
 
 
-  function displayScore() {
+function displayScore() {
     textSize(24);
     textAlign(LEFT, TOP);
     text("Score: " + score, -200, - 200);
-  }
+}
 
-  function displayInstruction() {
+function displayInstruction() {
     textSize(20);
     textAlign(CENTER);
     fill(90);
     text(instruction, 0, 200);
-  }
+}
 
 function keyPressed() {
     if (key == 'd' || key == 'D') {
@@ -1051,25 +1051,25 @@ function keyPressed() {
     // Check if the game is finished
     if (gameFinished) {
         return;
-      }
-  
-      // Check if the pressed key matches the current note
-      if (key.toUpperCase() === note.name) {
+    }
+
+    // Check if the pressed key matches the current note
+    if (key.toUpperCase() === note.name) {
         score++;
         generateNote(); // Generate a new note
         instruction = "Correct! Press the next note.";
-      } else {
+    } else {
         // Incorrect guess
         //score--; // Decrease score for wrong guess
         instruction = "Incorrect! Try again.";
-      }
-  
-      tries++; // Increment the number of tries
-  
-      // After 10 tries, finish the game
-      if (tries === 10) {
+    }
+
+    tries++; // Increment the number of tries
+
+    // After 10 tries, finish the game
+    if (tries === 10) {
         gameFinished = true;
-      }
+    }
 }
 
 function displayFinalScore() {
@@ -1077,7 +1077,7 @@ function displayFinalScore() {
     textAlign(CENTER, CENTER)
     fill(90)
     text("Final Score: " + score, 0, 0);
-  }
+}
 
 /** event handler for clicking inside the flashcard */
 function mouseClicked() {
